@@ -167,6 +167,30 @@ init_database()
 def root():
     return FileResponse(PROJECT_DIR / "index.html")
 
+@app.get("/upload.html")
+def upload_page():
+    return FileResponse(PROJECT_DIR / "upload.html")
+
+
+@app.get("/ai.html")
+def ai_page():
+    return FileResponse(PROJECT_DIR / "ai.html")
+
+
+@app.get("/grounding.html")
+def grounding_page():
+    return FileResponse(PROJECT_DIR / "grounding.html")
+
+
+@app.get("/change-detection.html")
+def change_detection_page():
+    return FileResponse(PROJECT_DIR / "change-detection.html")
+
+
+@app.get("/optical-sar.html")
+def optical_sar_page():
+    return FileResponse(PROJECT_DIR / "optical-sar.html")
+
 
 # ============================================================
 # HEALTH
