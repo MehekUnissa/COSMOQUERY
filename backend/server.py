@@ -191,6 +191,14 @@ def change_detection_page():
 def optical_sar_page():
     return FileResponse(PROJECT_DIR / "optical-sar.html")
 
+@app.get("/processing.html")
+def processing_page():
+    return FileResponse(PROJECT_DIR / "processing.html")
+
+
+@app.get("/results.html")
+def results_page():
+    return FileResponse(PROJECT_DIR / "results.html")
 
 # ============================================================
 # HEALTH
