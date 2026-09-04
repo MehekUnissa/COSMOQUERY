@@ -13,6 +13,19 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 # ============================================================
+# PATHS
+# ============================================================
+
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = BASE_DIR.parent
+
+STORAGE_DIR = BASE_DIR / "storage"
+UPLOAD_DIR = STORAGE_DIR / "uploads"
+
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+
+# ============================================================
 # APP
 # ============================================================
 
@@ -20,8 +33,19 @@ app = FastAPI(
     title="COSMO QUERY",
     version="1.0"
 )
-app.mount("/css", StaticFiles(directory=str(PROJECT_DIR / "css")), name="css")
-app.mount("/js", StaticFiles(directory=str(PROJECT_DIR / "js")), name="js")
+
+app.mount(
+    "/css",
+    StaticFiles(directory=str(PROJECT_DIR / "css")),
+    name="css"
+)
+
+app.mount(
+    "/js",
+    StaticFiles(directory=str(PROJECT_DIR / "js")),
+    name="js"
+)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
