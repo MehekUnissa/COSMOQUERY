@@ -7,6 +7,8 @@ import requests
 from io import BytesIO
 
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -18,7 +20,8 @@ app = FastAPI(
     title="COSMO QUERY",
     version="1.0"
 )
-
+app.mount("/css", StaticFiles(directory=str(PROJECT_DIR / "css")), name="css")
+app.mount("/js", StaticFiles(directory=str(PROJECT_DIR / "js")), name="js")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -32,7 +35,7 @@ app.add_middleware(
 # ============================================================
 
 BASE_DIR = Path(__file__).resolve().parent
-
+PROJECT_DIR = BASE_DIR.parent
 STORAGE_DIR = BASE_DIR / "storage"
 UPLOAD_DIR = STORAGE_DIR / "uploads"
 
@@ -138,12 +141,7 @@ init_database()
 
 @app.get("/")
 def root():
-
-    return {
-        "system": "COSMO QUERY",
-        "status": "ONLINE",
-        "ai": OLLAMA_MODEL
-    }
+    return FileResponse(PROJECT_DIR / "index.html")
 
 
 # ============================================================
