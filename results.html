@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cosmo Query | Analysis Results</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/results.css">
+
+</head>
+
+
+<body>
+
+<header class="navbar">
+
+    <a href="index.html" class="brand">
+        <span class="brand-symbol">◉</span>
+        COSMO<span class="brand-accent">QUERY</span>
+    </a>
+
+    <div class="result-status">
+        <span class="status-dot"></span>
+        ANALYSIS COMPLETE
+    </div>
+
+    <button
+        class="nav-launch"
+        onclick="window.location.href='upload.html'"
+    >
+        NEW ANALYSIS
+    </button>
+
+</header>
+
+
+<main class="results">
+
+    <div class="results-heading">
+
+        <div>
+
+            <span class="section-number">
+                SATQUERY AI / RESULT
+            </span>
+
+            <h1>
+                Analysis
+                <span>complete.</span>
+            </h1>
+
+            <p>
+                Cosmo Agent has processed the mission data and
+                generated an evidence-backed interpretation.
+            </p>
+
+        </div>
+
+
+        <div class="completion-mark">
+            ✓
+        </div>
+
+    </div>
+
+
+    <section class="metrics">
+
+        <div class="metric">
+
+            <span>CONFIDENCE</span>
+
+            <strong>
+                <span id="confidence">
+                    94.7
+                </span>%
+            </strong>
+
+            <small>
+                MODEL CONFIDENCE
+            </small>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>DETECTED OBJECTS</span>
+
+            <strong id="objects">
+                127
+            </strong>
+
+            <small>
+                VISUAL FEATURES
+            </small>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>CHANGE AREA</span>
+
+            <strong>
+                <span id="changedArea">
+                    18.4
+                </span>%
+            </strong>
+
+            <small>
+                ANALYZED REGION
+            </small>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>AGENT STATUS</span>
+
+            <strong class="online">
+                READY
+            </strong>
+
+            <small>
+                SESSION COMPLETE
+            </small>
+
+        </div>
+
+    </section>
+
+
+    <section class="evidence-grid">
+
+        <div class="evidence-card">
+
+            <div class="evidence-header">
+                <span>01 / INPUT</span>
+                <strong>OBSERVATION</strong>
+            </div>
+
+            <div class="fake-image original">
+
+                <div class="image-overlay-grid"></div>
+
+                <span>
+                    SOURCE IMAGE
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="evidence-card">
+
+            <div class="evidence-header">
+                <span>02 / EVIDENCE</span>
+                <strong>AI OUTPUT</strong>
+            </div>
+
+            <div class="fake-image analysis">
+
+                <div class="detected-box box-one">
+                    <span>REGION A</span>
+                </div>
+
+                <div class="detected-box box-two">
+                    <span>REGION B</span>
+                </div>
+
+                <span>
+                    ANALYSIS OVERLAY
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="interpretation">
+
+        <div class="interpretation-heading">
+
+            <span>
+                03 / COSMO INTERPRETATION
+            </span>
+
+            <small>
+                EVIDENCE-BACKED RESPONSE
+            </small>
+
+        </div>
+
+
+        <div class="interpretation-body">
+
+            <div class="quote-mark">
+                "
+            </div>
+
+            <p id="interpretationText">
+                Cosmo Query completed the requested Earth observation
+                analysis and generated evidence for the detected regions.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="export-section">
+
+        <div>
+            <span>EXPORT RESULTS</span>
+
+            <p>
+                Preserve this analysis for downstream workflows.
+            </p>
+        </div>
+
+        <div class="export-buttons">
+
+            <button onclick="exportJSON()">
+                JSON
+            </button>
+
+            <button onclick="exportCSV()">
+                CSV
+            </button>
+
+            <button onclick="window.print()">
+                PDF / PRINT
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script src="js/results.js"></script>
+
+</body>
+</html>

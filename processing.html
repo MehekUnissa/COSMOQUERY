@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>COSMO QUERY | Processing</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: #01030a;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   SPACE
+========================================================= */
+
+.space {
+    position: fixed;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(18,90,160,.20),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(70,30,150,.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 75%,
+            rgba(0,150,255,.10),
+            transparent 30%
+        ),
+        #01030a;
+
+    z-index: 0;
+}
+
+
+/* =========================================================
+   STARS
+========================================================= */
+
+.stars {
+    position: fixed;
+    inset: 0;
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.8) 1px,
+            transparent 1.5px
+        ),
+        radial-gradient(
+            circle,
+            rgba(80,180,255,.7) 1px,
+            transparent 1.5px
+        );
+
+    background-size:
+        90px 90px,
+        150px 150px;
+
+    background-position:
+        20px 30px,
+        70px 90px;
+
+    opacity: .45;
+
+    animation:
+        stars 40s linear infinite;
+
+    z-index: 1;
+}
+
+@keyframes stars {
+
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(80px);
+    }
+
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.grid {
+    position: fixed;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(40,130,200,.07) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(40,130,200,.07) 1px,
+            transparent 1px
+        );
+
+    background-size: 70px 70px;
+
+    mask-image:
+        radial-gradient(
+            ellipse at center,
+            black 0%,
+            transparent 75%
+        );
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 72px;
+
+    padding: 0 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid rgba(80,160,230,.12);
+
+    background:
+        rgba(1,4,10,.72);
+
+    backdrop-filter: blur(15px);
+
+    z-index: 50;
+}
+
+
+.logo {
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+}
+
+
+.logo span {
+
+    color: #25caff;
+}
+
+
+.logo-icon {
+
+    display: inline-flex;
+
+    width: 18px;
+    height: 18px;
+
+    margin-right: 10px;
+
+    border: 2px solid #20caff;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 14px rgba(20,200,255,.8);
+
+    vertical-align: -4px;
+}
+
+
+.status {
+
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+    color: #657a92;
+}
+
+
+.status-dot {
+
+    display: inline-block;
+
+    width: 6px;
+    height: 6px;
+
+    margin-right: 8px;
+
+    border-radius: 50%;
+
+    background: #25d5ff;
+
+    box-shadow:
+        0 0 12px #25d5ff;
+
+    animation:
+        blink 1.5s infinite;
+}
+
+@keyframes blink {
+
+    0%,100% {
+        opacity: .3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+.hud {
+
+    position: fixed;
+
+    top: 105px;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: #42566e;
+
+    line-height: 1.8;
+
+    z-index: 20;
+}
+
+
+.hud-left {
+    left: 30px;
+}
+
+
+.hud-right {
+
+    right: 30px;
+
+    text-align: right;
+}
+
+
+.hud strong {
+
+    display: block;
+
+    color: #66809d;
+
+    font-weight: normal;
+}
+
+
+.hud .cyan {
+
+    color: #26caff;
+}
+
+
+/* =========================================================
+   CENTER
+========================================================= */
+
+.processing {
+
+    position: fixed;
+
+    width: 760px;
+
+    max-width: 90vw;
+
+    top: 50%;
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    z-index: 30;
+}
+
+
+/* =========================================================
+   CORE
+========================================================= */
+
+.core {
+
+    position: relative;
+
+    width: 190px;
+    height: 190px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+}
+
+
+.orbit {
+
+    position: absolute;
+
+    border-radius: 50%;
+}
+
+
+.orbit1 {
+
+    width: 190px;
+    height: 190px;
+
+    border:
+        1px solid rgba(35,200,255,.3);
+
+    border-top-color:
+        #25caff;
+
+    animation:
+        spin1 5s linear infinite;
+}
+
+
+.orbit2 {
+
+    width: 170px;
+    height: 70px;
+
+    border:
+        1px solid rgba(150,80,255,.5);
+
+    transform:
+        rotateX(65deg);
+
+    animation:
+        spin2 4s linear infinite;
+}
+
+
+.orbit3 {
+
+    width: 145px;
+    height: 145px;
+
+    border:
+        1px solid rgba(35,180,255,.25);
+
+    border-right-color:
+        #9b5cff;
+
+    transform:
+        rotateY(65deg);
+
+    animation:
+        spin3 6s linear infinite;
+}
+
+
+@keyframes spin1 {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+@keyframes spin2 {
+
+    from {
+
+        transform:
+            rotateX(65deg)
+            rotateZ(0deg);
+    }
+
+    to {
+
+        transform:
+            rotateX(65deg)
+            rotateZ(360deg);
+    }
+
+}
+
+
+@keyframes spin3 {
+
+    from {
+
+        transform:
+            rotateY(65deg)
+            rotateZ(0deg);
+    }
+
+    to {
+
+        transform:
+            rotateY(65deg)
+            rotateZ(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   GLOW
+========================================================= */
+
+.core-glow {
+
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(30,200,255,.4),
+            rgba(40,80,255,.15),
+            transparent 70%
+        );
+
+    filter: blur(15px);
+
+    animation:
+        glow 3s ease-in-out infinite;
+}
+
+
+@keyframes glow {
+
+    0%,100% {
+
+        transform: scale(.9);
+
+        opacity: .5;
+    }
+
+    50% {
+
+        transform: scale(1.15);
+
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   CORE BALL
+========================================================= */
+
+.core-ball {
+
+    position: relative;
+
+    width: 86px;
+    height: 86px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            #e7fbff 0%,
+            #39d6ff 12%,
+            #1287d0 35%,
+            #0b3b70 65%,
+            #010714 100%
+        );
+
+    box-shadow:
+
+        0 0 20px rgba(20,210,255,.9),
+
+        0 0 60px rgba(30,130,255,.4),
+
+        inset -18px -15px 30px rgba(0,0,0,.6);
+
+    animation:
+        floating 3s ease-in-out infinite;
+
+    overflow: hidden;
+}
+
+
+@keyframes floating {
+
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+
+}
+
+
+.scan {
+
+    position: absolute;
+
+    inset: -20px;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 7px,
+            rgba(255,255,255,.1) 8px,
+            transparent 9px
+        );
+
+    animation:
+        scan 2s linear infinite;
+}
+
+
+@keyframes scan {
+
+    from {
+        transform: translateY(-20px);
+    }
+
+    to {
+        transform: translateY(25px);
+    }
+
+}
+
+
+.core-text {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 15px #25caff;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.label {
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 5px;
+
+    color: #24caff;
+
+    margin-top: 4px;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+h1 {
+
+    margin-top: 14px;
+
+    font-size:
+        clamp(42px, 6vw, 68px);
+
+    line-height: .95;
+
+    letter-spacing: -3px;
+
+    font-weight: 800;
+
+    color: #eaf1f8;
+}
+
+
+h1 span {
+
+    display: block;
+
+    background:
+        linear-gradient(
+            90deg,
+            #21caff,
+            #6287ff,
+            #a15cff
+        );
+
+    -webkit-background-clip: text;
+
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+#processingMessage {
+
+    margin-top: 18px;
+
+    min-height: 20px;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+
+    color: #8295ad;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress {
+
+    width: 500px;
+
+    max-width: 75vw;
+
+    margin-top: 25px;
+}
+
+
+.progress-info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: #53677f;
+}
+
+
+#percent {
+
+    color: #28caff;
+}
+
+
+.progress-track {
+
+    width: 100%;
+
+    height: 3px;
+
+    background:
+        rgba(60,120,180,.15);
+}
+
+
+#bar {
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #20caff,
+            #617eff,
+            #a65cff
+        );
+
+    box-shadow:
+        0 0 15px rgba(30,200,255,.8);
+
+    transition:
+        width .3s ease;
+}
+
+
+/* =========================================================
+   MODULES
+========================================================= */
+
+.modules {
+
+    display: flex;
+
+    gap: 6px;
+
+    margin-top: 20px;
+}
+
+
+.module {
+
+    width: 108px;
+
+    padding: 9px 12px;
+
+    border:
+        1px solid rgba(70,140,210,.14);
+
+    background:
+        rgba(4,10,20,.75);
+
+    text-align: left;
+}
+
+
+.module-number {
+
+    display: block;
+
+    font-size: 7px;
+
+    color: #40546c;
+
+    margin-bottom: 4px;
+}
+
+
+.module-name {
+
+    font-size: 8px;
+
+    letter-spacing: 1px;
+
+    color: #5b7089;
+}
+
+
+.module.active {
+
+    border-color:
+        rgba(35,200,255,.45);
+
+    box-shadow:
+        0 0 18px rgba(20,170,255,.08);
+}
+
+
+.module.active .module-number,
+.module.active .module-name {
+
+    color: #27caff;
+}
+
+
+/* =========================================================
+   BOTTOM
+========================================================= */
+
+.bottom {
+
+    position: fixed;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 42px;
+
+    padding: 0 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-top:
+        1px solid rgba(70,130,200,.1);
+
+    background:
+        rgba(1,4,10,.75);
+
+    color: #42566e;
+
+    font-size: 7px;
+
+    letter-spacing: 2px;
+
+    z-index: 50;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px) {
+
+    .topbar {
+
+        height: 60px;
+
+        padding: 0 18px;
+    }
+
+    .status {
+        display: none;
+    }
+
+    .hud {
+        display: none;
+    }
+
+    .processing {
+        width: 92vw;
+    }
+
+    .core {
+
+        width: 155px;
+        height: 155px;
+    }
+
+    .orbit1 {
+
+        width: 155px;
+        height: 155px;
+    }
+
+    .orbit2 {
+
+        width: 140px;
+        height: 60px;
+    }
+
+    .orbit3 {
+
+        width: 120px;
+        height: 120px;
+    }
+
+    .core-ball {
+
+        width: 70px;
+        height: 70px;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    .progress {
+        width: 80vw;
+    }
+
+    .modules {
+        gap: 3px;
+    }
+
+    .module {
+
+        width: 75px;
+
+        padding: 7px;
+    }
+
+    .module-name {
+        font-size: 6px;
+    }
+
+    .bottom {
+        padding: 0 15px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="space"></div>
+
+<div class="stars"></div>
+
+<div class="grid"></div>
+
+
+<header class="topbar">
+
+    <div class="logo">
+
+        <span class="logo-icon"></span>
+
+        COSMO <span>QUERY</span>
+
+    </div>
+
+
+    <div class="status">
+
+        <span class="status-dot"></span>
+
+        COSMOQUERY AI / SYSTEM ONLINE
+
+    </div>
+
+</header>
+
+
+<div class="hud hud-left">
+
+    MISSION
+
+    <strong>EARTH OBSERVATION</strong>
+
+    MODE
+
+    <strong id="hudMode">MULTIMODAL AI</strong>
+
+</div>
+
+
+<div class="hud hud-right">
+
+    NODE
+
+    <strong>COSMO-01</strong>
+
+    STATUS
+
+    <strong class="cyan">PROCESSING</strong>
+
+</div>
+
+
+<main class="processing">
+
+
+    <div class="core">
+
+        <div class="orbit orbit1"></div>
+
+        <div class="orbit orbit2"></div>
+
+        <div class="orbit orbit3"></div>
+
+        <div class="core-glow"></div>
+
+        <div class="core-ball">
+
+            <div class="scan"></div>
+
+            <div class="core-text">
+                CQ
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="label">
+
+        COSMOQUERY AI / EARTH DATA PROCESSING
+
+    </div>
+
+
+    <h1>
+
+        Processing
+
+        <span>Earth Data.</span>
+
+    </h1>
+
+
+    <p id="processingMessage">
+
+        Preparing satellite workspace...
+
+    </p>
+
+
+    <div class="progress">
+
+        <div class="progress-info">
+
+            <span>
+                ANALYSIS PROGRESS
+            </span>
+
+            <span id="percent">
+                0%
+            </span>
+
+        </div>
+
+
+        <div class="progress-track">
+
+            <div id="bar"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="modules">
+
+        <div class="module active">
+
+            <span class="module-number">
+                01
+            </span>
+
+            <span class="module-name">
+                IMAGE LOAD
+            </span>
+
+        </div>
+
+
+        <div class="module">
+
+            <span class="module-number">
+                02
+            </span>
+
+            <span class="module-name">
+                COSMO AI
+            </span>
+
+        </div>
+
+
+        <div class="module">
+
+            <span class="module-number">
+                03
+            </span>
+
+            <span class="module-name">
+                ANALYSIS
+            </span>
+
+        </div>
+
+
+        <div class="module">
+
+            <span class="module-number">
+                04
+            </span>
+
+            <span class="module-name">
+                EVIDENCE
+            </span>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer class="bottom">
+
+    <span>
+        COSMO QUERY / SECURE ANALYSIS SESSION
+    </span>
+
+    <span>
+        17.3850° N &nbsp;&nbsp; 78.4867° E
+    </span>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   COSMO QUERY — SINGLE PROCESSING CONTROLLER
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const bar =
+        document.getElementById("bar");
+
+    const percent =
+        document.getElementById("percent");
+
+    const message =
+        document.getElementById(
+            "processingMessage"
+        );
+
+    const hudMode =
+        document.getElementById(
+            "hudMode"
+        );
+
+    const modules =
+        document.querySelectorAll(
+            ".module"
+        );
+
+
+    /* -----------------------------------------------------
+       SELECTED MODE
+    ----------------------------------------------------- */
+
+    const mode =
+        localStorage.getItem(
+            "analysisMode"
+        ) || "vqa";
+
+
+    const modeNames = {
+
+        vqa:
+            "VISION Q&A",
+
+        grounding:
+            "GROUNDING",
+
+        change_detection:
+            "CHANGE DETECTION",
+
+        optical_sar:
+            "OPTICAL + SAR"
+
+    };
+
+
+    const currentMode =
+        modeNames[mode] || "VISION Q&A";
+
+
+    if (hudMode) {
+
+        hudMode.textContent =
+            currentMode;
+
+    }
+
+
+    /* -----------------------------------------------------
+       MODULE LABELS
+    ----------------------------------------------------- */
+
+    if (modules.length >= 4) {
+
+        modules[0]
+            .querySelector(".module-name")
+            .textContent =
+            "IMAGE LOAD";
+
+
+        modules[1]
+            .querySelector(".module-name")
+            .textContent =
+            "COSMO AI";
+
+
+        modules[2]
+            .querySelector(".module-name")
+            .textContent =
+            currentMode;
+
+
+        modules[3]
+            .querySelector(".module-name")
+            .textContent =
+            "EVIDENCE";
+
+    }
+
+
+    /* -----------------------------------------------------
+       PROCESSING MESSAGES
+    ----------------------------------------------------- */
+
+    const messages = [
+
+        "CONNECTING TO COSMO AI...",
+
+        "LOADING EARTH OBSERVATION DATA...",
+
+        "READING SATELLITE IMAGE...",
+
+        "UNDERSTANDING OBSERVATION CONTEXT...",
+
+        "ACTIVATING COSMO AI AGENT...",
+
+        "SELECTING SPECIALIST AI PIPELINE...",
+
+        "PREPARING VISUAL EVIDENCE...",
+
+        "COSMO AI READY — OPENING ANALYSIS..."
+
+    ];
+
+
+    let progress = 0;
+
+    let messageIndex = 0;
+
+
+    /* -----------------------------------------------------
+       ANIMATION
+    ----------------------------------------------------- */
+
+    const timer =
+        setInterval(() => {
+
+            progress +=
+                Math.floor(
+                    Math.random() * 5
+                ) + 4;
+
+
+            if (progress >= 100) {
+
+                progress = 100;
+
+            }
+
+
+            if (bar) {
+
+                bar.style.width =
+                    progress + "%";
+
+            }
+
+
+            if (percent) {
+
+                percent.textContent =
+                    progress + "%";
+
+            }
+
+
+            const step =
+                Math.min(
+                    messages.length - 1,
+                    Math.floor(
+                        (progress / 100) *
+                        messages.length
+                    )
+                );
+
+
+            if (
+                step !== messageIndex
+            ) {
+
+                messageIndex = step;
+
+
+                if (message) {
+
+                    message.textContent =
+                        messages[
+                            messageIndex
+                        ];
+
+                }
+
+            }
+
+
+            /* -------------------------------------------------
+               MODULE ACTIVATION
+            ------------------------------------------------- */
+
+            if (modules.length) {
+
+                const activeCount =
+                    Math.ceil(
+                        (progress / 100) *
+                        modules.length
+                    );
+
+
+                modules.forEach(
+                    (module, index) => {
+
+                        if (
+                            index <
+                            activeCount
+                        ) {
+
+                            module.classList.add(
+                                "active"
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            /* -------------------------------------------------
+               COMPLETE
+            ------------------------------------------------- */
+
+            if (progress >= 100) {
+
+                clearInterval(timer);
+
+
+                if (message) {
+
+                    message.textContent =
+                        "ANALYSIS COMPLETE — OPENING WORKSPACE...";
+
+                }
+
+
+                modules.forEach(
+                    module => {
+
+                        module.classList.add(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                setTimeout(() => {
+
+                    let destination =
+                        "ai.html";
+
+
+                    if (
+                        mode ===
+                        "grounding"
+                    ) {
+
+                        destination =
+                            "grounding.html";
+
+                    }
+
+                    else if (
+                        mode ===
+                        "change_detection"
+                    ) {
+
+                        destination =
+                            "change-detection.html";
+
+                    }
+
+                    else if (
+                        mode ===
+                        "optical_sar"
+                    ) {
+
+                        destination =
+                            "optical-sar.html";
+
+                    }
+
+
+                    console.log(
+                        "COSMO QUERY →",
+                        destination
+                    );
+
+
+                    window.location.href =
+                        destination;
+
+
+                }, 800);
+
+            }
+
+        }, 350);
+
+});
+
+</script>
+
+</body>
+
+</html>

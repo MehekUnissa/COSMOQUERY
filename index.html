@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>COSMO QUERY | Earth Observation Intelligence</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- THREE.JS - KEEP THIS FOR YOUR EXISTING EARTH -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+
+<body>
+
+<div id="stars"></div>
+<div class="space-glow"></div>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-orbit"></div>
+
+        <span class="brand-symbol">◉</span>
+
+        <span>
+            COSMO<span class="brand-accent">QUERY</span>
+        </span>
+
+    </div>
+
+
+    <nav>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#about">About</a>
+    </nav>
+
+
+    <button
+        class="nav-launch"
+        onclick="launchCosmo()">
+
+        <span class="status-dot"></span>
+
+        Launch System
+
+    </button>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+
+    <!-- LEFT SIDE -->
+
+    <div class="hero-content">
+
+        <div class="system-status">
+
+            <span class="pulse"></span>
+
+            EARTH OBSERVATION SYSTEM
+
+            <b>ONLINE</b>
+
+        </div>
+
+
+        <div class="eyebrow">
+
+            SATQUERY AI / MULTIMODAL EARTH INTELLIGENCE
+
+        </div>
+
+
+        <h1>
+
+            <span class="title-line">
+                ASK.
+            </span>
+
+            <span class="title-line blue-text">
+                ANALYZE.
+            </span>
+
+            <span class="title-line">
+                UNDERSTAND <i>EARTH.</i>
+            </span>
+
+        </h1>
+
+
+        <p class="hero-description">
+
+            A conversational vision-language intelligence
+            system for understanding satellite imagery
+            through natural language.
+
+        </p>
+
+
+        <!-- BUTTONS -->
+
+        <div class="hero-actions">
+
+            <button
+                class="primary-btn"
+                onclick="launchCosmo()">
+
+                <span>
+                    START ANALYSIS
+                </span>
+
+                <span class="arrow">
+                    ↗
+                </span>
+
+            </button>
+
+
+            <a
+                href="#architecture"
+                class="secondary-btn">
+
+                EXPLORE SYSTEM
+
+            </a>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="hero-stats">
+
+            <div>
+                <strong>04</strong>
+                <span>AI MODULES</span>
+            </div>
+
+            <div>
+                <strong>01</strong>
+                <span>CONVERSATIONAL AGENT</span>
+            </div>
+
+            <div>
+                <strong>∞</strong>
+                <span>EARTH QUESTIONS</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= EARTH ================= -->
+
+    <div class="earth-stage">
+
+        <div class="coordinates coord-top">
+            17.3850° N / 78.4867° E
+        </div>
+
+
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="orbit orbit-three"></div>
+
+
+        <!-- !!! DO NOT REMOVE !!!
+             YOUR THREE.JS EARTH GOES HERE -->
+
+        <div id="earth-container"></div>
+
+
+        <!-- HUD -->
+
+        <div class="earth-hud hud-one">
+
+            <span>01</span>
+
+            MULTISPECTRAL
+
+        </div>
+
+
+        <div class="earth-hud hud-two">
+
+            <span>02</span>
+
+            SAR ANALYSIS
+
+        </div>
+
+
+        <div class="earth-hud hud-three">
+
+            <span>03</span>
+
+            CHANGE DETECTION
+
+        </div>
+
+
+        <div class="scan-ring"></div>
+
+
+        <!-- SATELLITE -->
+
+        <div class="satellite">
+
+            <div class="sat-body"></div>
+
+            <div class="sat-panel left"></div>
+
+            <div class="sat-panel right"></div>
+
+            <div class="sat-beam"></div>
+
+        </div>
+
+
+        <!-- DATA HUD -->
+
+        <div class="earth-data-panel">
+
+            <div class="data-title">
+
+                <span class="live-dot"></span>
+
+                LIVE ORBITAL FEED
+
+            </div>
+
+
+            <div class="data-row">
+
+                <span>SENSOR</span>
+
+                <b>OPTICAL / SAR</b>
+
+            </div>
+
+
+            <div class="data-row">
+
+                <span>STATUS</span>
+
+                <b>ACTIVE</b>
+
+            </div>
+
+
+            <div class="data-row">
+
+                <span>AI CORE</span>
+
+                <b>COSMO-01</b>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= CAPABILITIES ================= -->
+
+<section
+    class="capabilities section"
+    id="capabilities">
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-number">
+                01 / CAPABILITIES
+            </span>
+
+            <h2>
+                One query.
+                <br>
+                <span>Multiple intelligence layers.</span>
+            </h2>
+
+        </div>
+
+
+        <p>
+            Cosmo Query coordinates specialized
+            remote-sensing capabilities behind
+            a single conversational interface.
+        </p>
+
+    </div>
+
+
+    <div class="capability-grid">
+
+
+        <article class="capability-card">
+
+            <div class="card-number">01</div>
+
+            <div class="cap-icon">◉</div>
+
+            <h3>VISION Q&A</h3>
+
+            <p>
+                Ask natural-language questions about
+                satellite imagery and receive contextual
+                visual answers.
+            </p>
+
+            <div class="card-footer">
+                SINGLE IMAGE VQA →
+            </div>
+
+        </article>
+
+
+        <article class="capability-card featured">
+
+            <div class="card-number">02</div>
+
+            <div class="cap-icon">⌖</div>
+
+            <h3>GROUNDING</h3>
+
+            <p>
+                Identify and highlight regions,
+                objects and locations referenced
+                by the user's query.
+            </p>
+
+            <div class="card-footer">
+                TEXT → VISUAL REGION →
+            </div>
+
+        </article>
+
+
+        <article class="capability-card">
+
+            <div class="card-number">03</div>
+
+            <div class="cap-icon">◫</div>
+
+            <h3>CHANGE DETECTION</h3>
+
+            <p>
+                Compare multi-temporal satellite
+                observations to identify meaningful
+                changes over time.
+            </p>
+
+            <div class="card-footer">
+                T1 × T2 → CHANGE →
+            </div>
+
+        </article>
+
+
+        <article class="capability-card">
+
+            <div class="card-number">04</div>
+
+            <div class="cap-icon">◇</div>
+
+            <h3>OPTICAL + SAR</h3>
+
+            <p>
+                Combine complementary satellite
+                modalities for more robust
+                Earth-surface interpretation.
+            </p>
+
+            <div class="card-footer">
+                MULTIMODAL FUSION →
+            </div>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= ARCHITECTURE ================= -->
+
+<section
+    class="architecture section"
+    id="architecture">
+
+    <div class="architecture-header">
+
+        <span class="section-number">
+            02 / AGENTIC ARCHITECTURE
+        </span>
+
+        <h2>
+            From question to
+            <span>evidence.</span>
+        </h2>
+
+    </div>
+
+
+    <div class="pipeline">
+
+
+        <div class="pipeline-node user-node">
+
+            <span class="node-icon">?</span>
+
+            <small>USER</small>
+
+            <strong>QUERY</strong>
+
+        </div>
+
+
+        <div class="pipeline-line"></div>
+
+
+        <div class="pipeline-node">
+
+            <span class="node-icon">◎</span>
+
+            <small>UNDERSTAND</small>
+
+            <strong>QUERY</strong>
+
+        </div>
+
+
+        <div class="pipeline-line"></div>
+
+
+        <div class="pipeline-node agent-node">
+
+            <span class="node-icon">✦</span>
+
+            <small>COSMO</small>
+
+            <strong>AGENT</strong>
+
+        </div>
+
+
+        <div class="branch-lines">
+
+            <div></div>
+            <div></div>
+            <div></div>
+
+        </div>
+
+
+        <div class="specialists">
+
+            <div>
+                <span>◉</span>
+                <strong>VQA</strong>
+            </div>
+
+            <div>
+                <span>⌖</span>
+                <strong>GROUND</strong>
+            </div>
+
+            <div>
+                <span>◫</span>
+                <strong>CHANGE</strong>
+            </div>
+
+            <div>
+                <span>◇</span>
+                <strong>SAR</strong>
+            </div>
+
+        </div>
+
+
+        <div class="pipeline-line"></div>
+
+
+        <div class="pipeline-node evidence-node">
+
+            <span class="node-icon">✓</span>
+
+            <small>EVIDENCE</small>
+
+            <strong>ANSWER</strong>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= ABOUT ================= -->
+
+<section
+    class="about-section section"
+    id="about">
+
+    <div class="about-panel">
+
+
+        <div>
+
+            <span class="section-number">
+                03 / THE IDEA
+            </span>
+
+
+            <h2>
+                Satellite imagery
+                shouldn't require
+                a satellite scientist
+                to understand.
+            </h2>
+
+        </div>
+
+
+        <div class="about-copy">
+
+            <p>
+                Cosmo Query turns complex
+                remote-sensing analysis into
+                a natural conversation.
+            </p>
+
+
+            <p>
+                Upload imagery. Ask a question.
+                Let the agent determine which
+                specialist capability is required
+                and return an evidence-backed answer.
+            </p>
+
+
+            <div class="mini-terminal">
+
+                <span class="terminal-dot"></span>
+
+                COSMO AGENT READY
+
+                <span class="terminal-cursor">_</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= FINAL CTA ================= -->
+
+<section class="final-cta">
+
+    <div class="cta-grid"></div>
+
+    <span>
+        EARTH OBSERVATION / SATQUERY AI
+    </span>
+
+
+    <h2>
+        Ask Earth
+        <br>
+        <span>anything.</span>
+    </h2>
+
+
+    <button
+        class="primary-btn large"
+        onclick="launchCosmo()">
+
+        INITIALIZE COSMO QUERY
+
+        <span>↗</span>
+
+    </button>
+
+</section>
+
+
+</main>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div>
+        COSMO QUERY
+    </div>
+
+    <div>
+        VISION · LANGUAGE · EARTH
+    </div>
+
+    <div>
+        © 2026
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     PROCESSING / LAUNCH SCREEN
+
+     KEEP THIS.
+     It appears when START ANALYSIS is clicked.
+===================================================== -->
+
+<div
+    class="launch-overlay"
+    id="launchOverlay">
+
+
+    <div class="launch-grid"></div>
+
+
+    <div class="launch-content">
+
+
+        <div class="launch-logo">
+
+            <span>◉</span>
+
+            COSMO QUERY
+
+        </div>
+
+
+        <div class="launch-spinner"></div>
+
+
+        <div id="launchMessage">
+
+            Initializing Earth observation systems...
+
+        </div>
+
+
+        <div class="launch-progress">
+
+            <span></span>
+
+        </div>
+
+
+        <small>
+
+            SATQUERY AI / SECURE SESSION
+
+        </small>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     LAUNCH FUNCTION
+
+     INDEX
+       ↓
+     PROCESSING ANIMATION
+       ↓
+     UPLOAD PAGE
+===================================================== -->
+
+<script>
+
+function launchCosmo() {
+
+    const overlay =
+        document.getElementById("launchOverlay");
+
+    const message =
+        document.getElementById("launchMessage");
+
+
+    if (!overlay) {
+        window.location.href = "upload.html";
+        return;
+    }
+
+
+    overlay.classList.add("active");
+
+
+    const messages = [
+
+        "Initializing Earth observation systems...",
+
+        "Connecting COSMO Agent...",
+
+        "Loading multimodal intelligence...",
+
+        "Preparing satellite workspace..."
+
+    ];
+
+
+    let index = 0;
+
+
+    message.textContent = messages[0];
+
+
+    const interval = setInterval(function () {
+
+        index++;
+
+        if (index < messages.length) {
+
+            message.textContent =
+                messages[index];
+
+        }
+
+    }, 600);
+
+
+    /*
+       After the animation,
+       go to the EXISTING upload page.
+
+       The upload page should then handle:
+       upload → processing → workspace/results
+    */
+
+    setTimeout(function () {
+
+        clearInterval(interval);
+
+        window.location.href =
+            "upload.html";
+
+    }, 3000);
+
+}
+
+</script>
+
+
+
+<!-- =====================================================
+     EXISTING THREE.JS / EARTH CODE
+===================================================== -->
+
+<script type="module" src="js/earth.js"></script>
+
+
+</body>
+</html>

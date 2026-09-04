@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>COSMO QUERY — AI Workspace</title>
+
+    <link
+        rel="stylesheet"
+        href="css/ai.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
+
+<header class="ai-topbar">
+
+    <div class="brand">
+
+        <span>COSMO</span>
+
+        <strong>QUERY</strong>
+
+    </div>
+
+
+    <div class="ai-status">
+
+        <span class="status-dot"></span>
+
+        COSMO AI ONLINE
+
+    </div>
+
+
+    <div class="mission-id">
+
+        MISSION
+        <strong id="missionId">
+            SATQUERY-01
+        </strong>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN AI WORKSPACE
+===================================================== -->
+
+<main class="ai-workspace">
+
+
+    <!-- =================================================
+         LEFT: IMAGE
+    ================================================== -->
+
+    <section class="image-panel">
+
+
+        <div class="panel-header">
+
+            <div>
+
+                <span class="panel-code">
+                    01 / OBSERVATION
+                </span>
+
+                <h2 id="imageTitle">
+                    SATELLITE IMAGE
+                </h2>
+
+            </div>
+
+
+            <div class="live-indicator">
+
+                LIVE ANALYSIS
+
+            </div>
+
+        </div>
+
+
+        <div class="image-viewer">
+
+            <div class="viewer-grid"></div>
+
+            <div class="scan-line"></div>
+
+
+            <div class="viewer-center">
+
+                <div class="earth-placeholder">
+
+                    <div class="earth-glow"></div>
+
+                    <div class="earth-circle">
+
+                        COSMO<br>
+                        AI
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="viewer-hud hud-top">
+
+                SENSOR: OPTICAL
+
+            </div>
+
+
+            <div class="viewer-hud hud-bottom">
+
+                <span>
+                    LAT 17.3850° N
+                </span>
+
+                <span>
+                    LON 78.4867° E
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="image-info">
+
+            <div>
+
+                <span>PRIMARY</span>
+
+                <strong id="primaryName">
+                    Awaiting observation
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>MODE</span>
+
+                <strong id="analysisMode">
+                    VISION Q&amp;A
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>STATUS</span>
+
+                <strong class="online">
+                    ANALYSIS READY
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         RIGHT: COSMO AI
+    ================================================== -->
+
+    <section class="chat-panel">
+
+
+        <div class="chat-header">
+
+            <div>
+
+                <span>
+                    02 / COSMO AI
+                </span>
+
+                <h1>
+                    Earth Intelligence
+                </h1>
+
+            </div>
+
+
+            <div class="ai-core">
+
+                <div class="core-ring"></div>
+
+                <div class="core-dot"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- AI INTRO -->
+
+        <div
+            id="chatMessages"
+            class="chat-messages"
+        >
+
+            <div class="message ai-message">
+
+                <div class="message-label">
+
+                    COSMO AI
+
+                </div>
+
+                <p>
+
+                    Observation received.
+
+                    I am ready to analyze the satellite
+                    data using the selected multimodal
+                    intelligence pipeline.
+
+                </p>
+
+                <div class="message-meta">
+
+                    SYSTEM READY
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- SUGGESTIONS -->
+
+        <div class="suggestions">
+
+            <button
+                type="button"
+                data-question="What objects can you detect in this image?"
+            >
+                Detect objects
+            </button>
+
+            <button
+                type="button"
+                data-question="Describe this satellite observation."
+            >
+                Describe image
+            </button>
+
+            <button
+                type="button"
+                data-question="Are there any significant changes?"
+            >
+                Find changes
+            </button>
+
+            <button
+                type="button"
+                data-question="What does this image show?"
+            >
+                Analyze scene
+            </button>
+
+        </div>
+
+
+
+        <!-- CHAT INPUT -->
+
+        <div class="chat-input-area">
+
+            <textarea
+                id="questionInput"
+                placeholder="Ask COSMO AI about this observation..."
+                rows="1"
+            ></textarea>
+
+
+            <button
+                id="askButton"
+                type="button"
+            >
+
+                ASK AI
+
+                <span>→</span>
+
+            </button>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     BOTTOM TELEMETRY
+===================================================== -->
+
+<footer class="ai-footer">
+
+    <span>
+        COSMO QUERY / SATELLITE INTELLIGENCE
+    </span>
+
+    <span>
+        MULTIMODAL AGENT ACTIVE
+    </span>
+
+    <span>
+        VQA • GROUNDING • CHANGE • OPTICAL/SAR
+    </span>
+
+</footer>
+
+
+<script src="js/ai.js"></script>
+
+</body>
+
+</html>

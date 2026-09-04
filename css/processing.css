@@ -1,0 +1,1107 @@
+/* =========================================================
+   COSMO QUERY
+   PROCESSING SCREEN
+   EXACT CENTERED VERSION
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background: #01040a;
+
+    color: #ffffff;
+
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.space {
+    position: fixed;
+    inset: 0;
+
+    z-index: -5;
+
+    background:
+
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(16, 95, 170, 0.16),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(85, 40, 190, 0.10),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 15% 80%,
+            rgba(0, 150, 255, 0.08),
+            transparent 30%
+        ),
+
+        #01040a;
+}
+
+
+/* =========================================================
+   STARS
+========================================================= */
+
+.stars {
+    position: fixed;
+    inset: 0;
+
+    z-index: -4;
+
+    opacity: .5;
+
+    background-image:
+
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.9) 1px,
+            transparent 1.5px
+        ),
+
+        radial-gradient(
+            circle,
+            rgba(80,180,255,.8) 1px,
+            transparent 1.5px
+        );
+
+    background-size:
+        85px 85px,
+        145px 145px;
+
+    background-position:
+        20px 20px,
+        60px 100px;
+
+    animation: starsMove 35s linear infinite;
+}
+
+@keyframes starsMove {
+
+    from {
+        background-position:
+            20px 20px,
+            60px 100px;
+    }
+
+    to {
+        background-position:
+            20px 100px,
+            60px 180px;
+    }
+}
+
+
+/* =========================================================
+   FUTURISTIC GRID
+========================================================= */
+
+.grid {
+    position: fixed;
+    inset: 0;
+
+    z-index: -3;
+
+    opacity: .5;
+
+    background-image:
+
+        linear-gradient(
+            rgba(50,145,220,.07) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(50,145,220,.07) 1px,
+            transparent 1px
+        );
+
+    background-size: 72px 72px;
+
+    mask-image:
+        radial-gradient(
+            ellipse at center,
+            black 0%,
+            transparent 72%
+        );
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 72px;
+
+    padding: 0 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid rgba(80,160,230,.12);
+
+    background:
+        rgba(1,4,10,.72);
+
+    backdrop-filter: blur(14px);
+
+    z-index: 100;
+}
+
+
+.logo {
+    position: relative;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    letter-spacing: 4px;
+
+    color: #e6edf7;
+}
+
+
+.logo b {
+    color: #26c8ff;
+}
+
+
+.logo-orbit {
+    display: inline-block;
+
+    width: 17px;
+    height: 17px;
+
+    margin-right: 10px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid #24c8ff;
+
+    box-shadow:
+        0 0 12px rgba(30,200,255,.8);
+
+    vertical-align: -3px;
+}
+
+
+.top-status {
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+    color: #61748e;
+}
+
+
+.top-status span {
+    display: inline-block;
+
+    width: 6px;
+    height: 6px;
+
+    margin-right: 8px;
+
+    border-radius: 50%;
+
+    background: #2de0ff;
+
+    box-shadow:
+        0 0 12px #2de0ff;
+
+    animation: pulse 1.5s infinite;
+}
+
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: .3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+.hud {
+    position: fixed;
+
+    z-index: 20;
+
+    top: 105px;
+
+    font-size: 8px;
+
+    line-height: 2;
+
+    letter-spacing: 2px;
+
+    color: #41546c;
+}
+
+
+.hud div {
+    margin-top: 9px;
+
+    color: #34475f;
+}
+
+
+.hud strong {
+    color: #617b99;
+
+    font-weight: 500;
+}
+
+
+.hud .cyan {
+    color: #25caff;
+}
+
+
+.hud-left {
+    left: 30px;
+}
+
+
+.hud-right {
+    right: 30px;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   ⭐ MAIN CENTER
+========================================================= */
+
+.processing-center {
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    width: min(760px, 90vw);
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    z-index: 30;
+}
+
+
+/* =========================================================
+   3D CORE
+========================================================= */
+
+.core-system {
+
+    position: relative;
+
+    width: 210px;
+    height: 210px;
+
+    margin-bottom: 12px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    perspective: 800px;
+}
+
+
+/* =========================================================
+   CORE GLOW
+========================================================= */
+
+.core-glow {
+
+    position: absolute;
+
+    width: 135px;
+    height: 135px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(25,190,255,.35),
+            rgba(45,100,255,.15) 45%,
+            transparent 72%
+        );
+
+    filter: blur(14px);
+
+    animation: coreGlow 3s ease-in-out infinite;
+}
+
+
+@keyframes coreGlow {
+
+    0%,
+    100% {
+        transform: scale(.9);
+
+        opacity: .55;
+    }
+
+    50% {
+        transform: scale(1.15);
+
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   CORE BALL
+========================================================= */
+
+.core {
+
+    position: relative;
+
+    width: 92px;
+    height: 92px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background:
+
+        radial-gradient(
+            circle at 30% 25%,
+            #dffaff 0%,
+            #42d9ff 12%,
+            #1686d2 38%,
+            #0b3868 65%,
+            #020713 100%
+        );
+
+    box-shadow:
+
+        0 0 20px rgba(35,210,255,.9),
+
+        0 0 60px rgba(35,130,255,.4),
+
+        inset -15px -15px 30px rgba(0,0,0,.55);
+
+    animation: coreFloat 3s ease-in-out infinite;
+}
+
+
+@keyframes coreFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(.98);
+    }
+
+    50% {
+        transform: translateY(-5px) scale(1.03);
+    }
+}
+
+
+/* =========================================================
+   CORE LIGHT
+========================================================= */
+
+.core-light {
+
+    position: absolute;
+
+    top: 9px;
+    left: 15px;
+
+    width: 30px;
+    height: 20px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.65);
+
+    filter: blur(8px);
+}
+
+
+/* =========================================================
+   SCANNING LINES
+========================================================= */
+
+.core-lines {
+
+    position: absolute;
+
+    inset: -30%;
+
+    background:
+
+        repeating-linear-gradient(
+            0deg,
+
+            transparent 0px,
+            transparent 7px,
+
+            rgba(255,255,255,.08) 8px,
+
+            transparent 9px
+        );
+
+    animation: scanning 2.5s linear infinite;
+}
+
+
+@keyframes scanning {
+
+    from {
+        transform: translateY(-20px);
+    }
+
+    to {
+        transform: translateY(30px);
+    }
+}
+
+
+/* =========================================================
+   CQ
+========================================================= */
+
+.core-center {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    color: rgba(255,255,255,.9);
+
+    text-shadow:
+        0 0 15px #22caff;
+}
+
+
+/* =========================================================
+   ORBITS
+========================================================= */
+
+.orbit {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(40,200,255,.25);
+
+    pointer-events: none;
+}
+
+
+.orbit-a {
+
+    width: 205px;
+    height: 205px;
+
+    border-top-color: #2acfff;
+
+    animation:
+        orbitA 5s linear infinite;
+}
+
+
+.orbit-b {
+
+    width: 190px;
+    height: 80px;
+
+    border-color:
+        rgba(140,80,255,.45);
+
+    transform: rotateX(65deg);
+
+    animation:
+        orbitB 4s linear infinite;
+}
+
+
+.orbit-c {
+
+    width: 150px;
+    height: 150px;
+
+    border-right-color:
+        #9d65ff;
+
+    transform: rotateY(65deg);
+
+    animation:
+        orbitC 6s linear infinite;
+}
+
+
+@keyframes orbitA {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+@keyframes orbitB {
+
+    from {
+        transform:
+            rotateX(65deg)
+            rotateZ(0deg);
+    }
+
+    to {
+        transform:
+            rotateX(65deg)
+            rotateZ(360deg);
+    }
+}
+
+
+@keyframes orbitC {
+
+    from {
+        transform:
+            rotateY(65deg)
+            rotateZ(0deg);
+    }
+
+    to {
+        transform:
+            rotateY(65deg)
+            rotateZ(360deg);
+    }
+}
+
+
+/* =========================================================
+   ORBIT DOTS
+========================================================= */
+
+.orbit-dot {
+
+    position: absolute;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #2bd5ff;
+
+    box-shadow:
+        0 0 15px #2bd5ff;
+}
+
+
+.dot-a {
+    top: 2px;
+    left: 102px;
+
+    animation:
+        dotA 5s linear infinite;
+}
+
+
+.dot-b {
+
+    right: 2px;
+    top: 102px;
+
+    background: #a268ff;
+
+    box-shadow:
+        0 0 15px #a268ff;
+
+    animation:
+        dotB 4s linear infinite;
+}
+
+
+.dot-c {
+
+    bottom: 15px;
+    left: 38px;
+
+    animation:
+        dotC 6s linear infinite;
+}
+
+
+@keyframes dotA {
+
+    from {
+        transform:
+            rotate(0deg)
+            translateX(102px);
+    }
+
+    to {
+        transform:
+            rotate(360deg)
+            translateX(102px);
+    }
+}
+
+
+@keyframes dotB {
+
+    from {
+        transform:
+            rotate(0deg)
+            translateX(95px);
+    }
+
+    to {
+        transform:
+            rotate(360deg)
+            translateX(95px);
+    }
+}
+
+
+@keyframes dotC {
+
+    from {
+        transform:
+            rotate(0deg)
+            translateX(90px);
+    }
+
+    to {
+        transform:
+            rotate(360deg)
+            translateX(90px);
+    }
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.system-label {
+
+    margin-top: 2px;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 5px;
+
+    color: #25caff;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.processing-center h1 {
+
+    margin-top: 12px;
+
+    font-size:
+        clamp(42px, 6vw, 68px);
+
+    line-height: .95;
+
+    font-weight: 800;
+
+    letter-spacing: -3px;
+
+    color: #e9f0f8;
+}
+
+
+.processing-center h1 span {
+
+    display: block;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #20caff,
+            #5d8cff,
+            #a25cff
+        );
+
+    -webkit-background-clip: text;
+
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+#processingMessage {
+
+    min-height: 20px;
+
+    margin-top: 18px;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+
+    color: #7e91aa;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress-area {
+
+    width: min(500px, 75vw);
+
+    margin-top: 23px;
+}
+
+
+.progress-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: #52677f;
+}
+
+
+.progress-header strong {
+
+    color: #28caff;
+
+    font-weight: 500;
+}
+
+
+.progress-track {
+
+    width: 100%;
+
+    height: 3px;
+
+    background:
+        rgba(70,130,190,.15);
+
+    overflow: hidden;
+}
+
+
+#progressBar {
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #16c8ff,
+            #637bff,
+            #a55cff
+        );
+
+    box-shadow:
+        0 0 16px rgba(30,200,255,.8);
+
+    transition:
+        width .3s ease;
+}
+
+
+/* =========================================================
+   MODULES
+========================================================= */
+
+.modules {
+
+    display: flex;
+
+    gap: 7px;
+
+    margin-top: 19px;
+}
+
+
+.module {
+
+    min-width: 105px;
+
+    padding: 8px 12px;
+
+    border:
+        1px solid rgba(70,140,210,.12);
+
+    background:
+        rgba(5,12,24,.65);
+
+    text-align: left;
+
+    transition: .3s;
+}
+
+
+.module small {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 7px;
+
+    color: #40536c;
+}
+
+
+.module span {
+
+    font-size: 8px;
+
+    letter-spacing: 1px;
+
+    color: #566b84;
+}
+
+
+.module.active {
+
+    border-color:
+        rgba(30,200,255,.4);
+
+    box-shadow:
+        0 0 20px
+        rgba(20,160,255,.05);
+}
+
+
+.module.active small,
+.module.active span {
+
+    color: #27caff;
+}
+
+
+/* =========================================================
+   BOTTOM BAR
+========================================================= */
+
+.bottom-bar {
+
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 42px;
+
+    padding: 0 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-top:
+        1px solid rgba(70,130,200,.1);
+
+    background:
+        rgba(1,4,10,.7);
+
+    color: #40536c;
+
+    font-size: 7px;
+
+    letter-spacing: 2px;
+
+    z-index: 100;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .topbar {
+        height: 60px;
+
+        padding: 0 18px;
+    }
+
+    .top-status {
+        display: none;
+    }
+
+    .hud {
+        display: none;
+    }
+
+    .processing-center {
+        width: 92vw;
+    }
+
+    .core-system {
+        width: 165px;
+        height: 165px;
+    }
+
+    .orbit-a {
+        width: 160px;
+        height: 160px;
+    }
+
+    .orbit-b {
+        width: 145px;
+        height: 65px;
+    }
+
+    .orbit-c {
+        width: 125px;
+        height: 125px;
+    }
+
+    .core {
+        width: 72px;
+        height: 72px;
+    }
+
+    .core-center {
+        font-size: 14px;
+    }
+
+    .processing-center h1 {
+        font-size: 40px;
+        letter-spacing: -2px;
+    }
+
+    #processingMessage {
+        font-size: 10px;
+    }
+
+    .progress-area {
+        width: 80vw;
+    }
+
+    .modules {
+        gap: 4px;
+    }
+
+    .module {
+        min-width: 70px;
+        padding: 7px;
+    }
+
+    .module span {
+        font-size: 6px;
+    }
+
+    .bottom-bar {
+        padding: 0 15px;
+    }
+}

@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>COSMO QUERY — Grounding</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* =====================================================
+           GROUNDING PAGE
+        ===================================================== */
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #02070d;
+            color: #e8f2ff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .space-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background:
+                radial-gradient(
+                    circle at 50% 35%,
+                    rgba(0, 120, 180, 0.12),
+                    transparent 45%
+                ),
+                #02070d;
+        }
+
+        .stars {
+            position: absolute;
+            inset: 0;
+            opacity: .35;
+            background-image:
+                radial-gradient(#ffffff 1px, transparent 1px);
+            background-size: 70px 70px;
+        }
+
+        .grid-glow {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    rgba(0, 160, 220, .04) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0, 160, 220, .04) 1px,
+                    transparent 1px
+                );
+            background-size: 70px 70px;
+        }
+
+        .topbar {
+            height: 70px;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(2, 12, 22, .94);
+            border-bottom: 1px solid rgba(80, 180, 230, .18);
+            box-sizing: border-box;
+        }
+
+        .topbar strong {
+            display: block;
+            color: #e9f5ff;
+            font-size: 18px;
+            letter-spacing: 4px;
+        }
+
+        .topbar span {
+            display: block;
+            margin-top: 5px;
+            color: #36bce8;
+            font-size: 10px;
+            letter-spacing: 3px;
+        }
+
+        #missionId {
+            color: #7f9bb4;
+            font-size: 11px;
+            letter-spacing: 2px;
+        }
+
+        .workspace {
+            width: min(1100px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 70px 0 80px;
+        }
+
+        .hero {
+            margin-bottom: 55px;
+        }
+
+        .eyebrow {
+            color: #25b7e6;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            color: #f1f4fa;
+            font-size: clamp(48px, 7vw, 92px);
+            line-height: .9;
+            letter-spacing: -5px;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            color: #cbd5e1;
+        }
+
+        .hero p {
+            max-width: 800px;
+            margin-top: 35px;
+            color: #a9b7c7;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .analysis-card {
+            background: rgba(5, 15, 26, .9);
+            border: 1px solid rgba(50, 180, 230, .2);
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, .45),
+                inset 0 0 40px rgba(0, 100, 160, .04);
+            padding: 28px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(100, 160, 190, .15);
+            color: #d9e8f5;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        #status {
+            color: #38c5ed;
+        }
+
+        .image-area {
+            margin-top: 25px;
+        }
+
+        .image-placeholder {
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px dashed rgba(60, 190, 235, .3);
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 130, 190, .07),
+                    rgba(0, 0, 0, .2)
+                );
+
+            color: #55c8eb;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+        .image-placeholder small {
+            margin-top: 14px;
+            color: #7890a6;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .suggestions button {
+            padding: 12px 16px;
+            background: rgba(10, 35, 52, .8);
+            border: 1px solid rgba(50, 180, 230, .3);
+            color: #bfe9f7;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .suggestions button:hover {
+            background: rgba(20, 80, 110, .8);
+            border-color: #36c5ee;
+        }
+
+        .query-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        #groundingQuery {
+            flex: 1;
+            min-width: 0;
+            padding: 17px 18px;
+            box-sizing: border-box;
+
+            background: #030b14;
+            border: 1px solid rgba(90, 160, 190, .3);
+            color: #edf7ff;
+            outline: none;
+            font-size: 14px;
+        }
+
+        #groundingQuery:focus {
+            border-color: #2ab9e6;
+            box-shadow: 0 0 18px rgba(30, 170, 220, .12);
+        }
+
+        #groundingQuery::placeholder {
+            color: #60788e;
+        }
+
+        #runGrounding {
+            padding: 0 28px;
+            background: #0b9bc9;
+            border: 1px solid #35c9f1;
+            color: white;
+            font-weight: 800;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        #runGrounding:hover {
+            background: #11b4e4;
+        }
+
+        #runGrounding:disabled {
+            opacity: .5;
+            cursor: wait;
+        }
+
+        .result-box {
+            min-height: 90px;
+            margin-top: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+
+            background: rgba(0, 8, 16, .8);
+            border-left: 2px solid #20b7e4;
+
+            color: #b9cad8;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .result-box.success {
+            color: #dcefff;
+        }
+
+        .result-box.error {
+            color: #ff9b9b;
+            border-left-color: #e65b5b;
+        }
+
+        @media (max-width: 700px) {
+            .workspace {
+                width: calc(100% - 28px);
+                padding-top: 45px;
+            }
+
+            .topbar {
+                padding: 0 16px;
+            }
+
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .query-row {
+                flex-direction: column;
+            }
+
+            #runGrounding {
+                min-height: 50px;
+            }
+        }
+        
+        /* =========================================================
+   3D SATELLITE / EARTH HERO
+========================================================= */
+
+.hero {
+    position: relative;
+    min-height: 500px;
+    overflow: hidden;
+}
+
+.hero-3d {
+    position: absolute;
+    left: -40px;
+    top: 30px;
+
+    width: 520px;
+    height: 520px;
+
+    pointer-events: none;
+
+    transform-style: preserve-3d;
+
+    opacity: .9;
+}
+
+/* ---------------------------------------------------------
+   EARTH
+--------------------------------------------------------- */
+
+.earth-3d {
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    left: 120px;
+    top: 110px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            rgba(110, 225, 255, .95),
+            rgba(20, 135, 190, .65) 30%,
+            rgba(5, 55, 95, .95) 65%,
+            #010b14 100%
+        );
+
+    box-shadow:
+        0 0 25px rgba(0, 180, 240, .35),
+        0 0 70px rgba(0, 130, 210, .2),
+        inset -35px -20px 60px rgba(0, 0, 0, .8);
+
+    animation: earthFloat 6s ease-in-out infinite;
+
+    transform-style: preserve-3d;
+}
+
+/* latitude / longitude effect */
+
+.earth-grid {
+    position: absolute;
+    inset: 8px;
+
+    border-radius: 50%;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 20px,
+            rgba(80, 220, 255, .14) 21px,
+            transparent 22px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 28px,
+            rgba(80, 220, 255, .12) 29px,
+            transparent 30px
+        );
+
+    border-radius: 50%;
+
+    transform:
+        rotateX(65deg)
+        scaleY(.45);
+
+    animation: gridRotate 9s linear infinite;
+}
+
+/* atmospheric glow */
+
+.earth-glow {
+    position: absolute;
+    inset: -15px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(55, 210, 255, .35);
+
+    box-shadow:
+        0 0 20px rgba(20, 190, 255, .25),
+        inset 0 0 20px rgba(20, 190, 255, .15);
+}
+
+/* ---------------------------------------------------------
+   ORBITAL RINGS
+--------------------------------------------------------- */
+
+.orbit {
+    position: absolute;
+
+    left: 78px;
+    top: 145px;
+
+    width: 345px;
+    height: 130px;
+
+    border: 1px solid rgba(55, 200, 240, .28);
+
+    border-radius: 50%;
+
+    transform-style: preserve-3d;
+}
+
+.orbit-1 {
+    transform:
+        rotateX(68deg)
+        rotateZ(-18deg);
+
+    animation:
+        orbitSpin1 12s linear infinite;
+}
+
+.orbit-2 {
+    width: 390px;
+    height: 155px;
+
+    left: 55px;
+    top: 130px;
+
+    transform:
+        rotateX(68deg)
+        rotateZ(42deg);
+
+    border-color: rgba(50, 180, 230, .18);
+
+    animation:
+        orbitSpin2 18s linear infinite reverse;
+}
+
+.orbit-3 {
+    width: 300px;
+    height: 390px;
+
+    left: 120px;
+    top: 20px;
+
+    transform:
+        rotateY(65deg)
+        rotateZ(20deg);
+
+    border-color: rgba(70, 220, 255, .13);
+
+    animation:
+        orbitSpin3 20s linear infinite;
+}
+
+/* ---------------------------------------------------------
+   SATELLITE
+--------------------------------------------------------- */
+
+.satellite-3d {
+    position: absolute;
+
+    left: 370px;
+    top: 90px;
+
+    width: 80px;
+    height: 45px;
+
+    transform-style: preserve-3d;
+
+    animation: satelliteOrbit 12s linear infinite;
+}
+
+/* satellite main body */
+
+.sat-body {
+    position: absolute;
+
+    width: 30px;
+    height: 22px;
+
+    left: 25px;
+    top: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #d8edf7,
+            #63879b
+        );
+
+    border: 1px solid rgba(160, 230, 255, .7);
+
+    box-shadow:
+        0 0 12px rgba(40, 200, 255, .4);
+
+    transform:
+        translateZ(10px)
+        rotateY(20deg);
+}
+
+/* solar panels */
+
+.sat-panel {
+    position: absolute;
+
+    width: 24px;
+    height: 18px;
+
+    top: 13px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #073451 0px,
+            #073451 4px,
+            #1a87b2 5px,
+            #073451 6px
+        );
+
+    border: 1px solid rgba(60, 190, 230, .6);
+}
+
+.panel-left {
+    left: 0;
+
+    transform:
+        perspective(300px)
+        rotateY(20deg);
+}
+
+.panel-right {
+    right: 0;
+
+    transform:
+        perspective(300px)
+        rotateY(-20deg);
+}
+
+/* antenna */
+
+.sat-antenna {
+    position: absolute;
+
+    width: 1px;
+    height: 28px;
+
+    left: 40px;
+    top: -12px;
+
+    background: #70dcff;
+
+    transform: rotate(20deg);
+
+    box-shadow:
+        0 0 7px rgba(60, 210, 255, .8);
+}
+
+/* ---------------------------------------------------------
+   ANIMATIONS
+--------------------------------------------------------- */
+
+@keyframes earthFloat {
+
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotateY(-8deg);
+    }
+
+    50% {
+        transform:
+            translateY(-12px)
+            rotateY(8deg);
+    }
+}
+
+@keyframes gridRotate {
+
+    from {
+        transform:
+            rotateX(65deg)
+            rotateZ(0deg)
+            scaleY(.45);
+    }
+
+    to {
+        transform:
+            rotateX(65deg)
+            rotateZ(360deg)
+            scaleY(.45);
+    }
+}
+
+@keyframes orbitSpin1 {
+
+    from {
+        transform:
+            rotateX(68deg)
+            rotateZ(-18deg);
+    }
+
+    to {
+        transform:
+            rotateX(68deg)
+            rotateZ(342deg);
+    }
+}
+
+@keyframes orbitSpin2 {
+
+    from {
+        transform:
+            rotateX(68deg)
+            rotateZ(42deg);
+    }
+
+    to {
+        transform:
+            rotateX(68deg)
+            rotateZ(-318deg);
+    }
+}
+
+@keyframes orbitSpin3 {
+
+    from {
+        transform:
+            rotateY(65deg)
+            rotateZ(20deg);
+    }
+
+    to {
+        transform:
+            rotateY(65deg)
+            rotateZ(380deg);
+    }
+}
+
+@keyframes satelliteOrbit {
+
+    0% {
+        transform:
+            translate(0, 0)
+            rotateZ(0deg);
+    }
+
+    25% {
+        transform:
+            translate(50px, 80px)
+            rotateZ(90deg);
+    }
+
+    50% {
+        transform:
+            translate(-20px, 155px)
+            rotateZ(180deg);
+    }
+
+    75% {
+        transform:
+            translate(-100px, 65px)
+            rotateZ(270deg);
+    }
+
+    100% {
+        transform:
+            translate(0, 0)
+            rotateZ(360deg);
+    }
+}
+
+/* ---------------------------------------------------------
+   KEEP TEXT ABOVE 3D
+--------------------------------------------------------- */
+
+.hero .eyebrow,
+.hero h1,
+.hero p {
+    position: relative;
+    z-index: 5;
+}
+
+/* ---------------------------------------------------------
+   MOBILE
+--------------------------------------------------------- */
+
+@media (max-width: 800px) {
+
+    .hero-3d {
+        left: 50%;
+        transform: translateX(-50%) scale(.7);
+        opacity: .35;
+    }
+
+    .hero .eyebrow,
+    .hero h1,
+    .hero p {
+        position: relative;
+        z-index: 10;
+    }
+
+}
+    </style>
+</head>
+
+<body>
+
+<div class="space-bg">
+    <div class="stars"></div>
+    <div class="grid-glow"></div>
+</div>
+
+<header class="topbar">
+
+    <div>
+        <strong>COSMO QUERY</strong>
+        <span>SATQUERY AI SYSTEM ONLINE</span>
+    </div>
+
+    <div id="missionId">
+        ANALYSIS
+    </div>
+
+</header>
+
+<main class="workspace">
+
+    <section class="hero">
+        <div class="hero-3d">
+
+    <div class="earth-3d">
+        <div class="earth-grid"></div>
+        <div class="earth-glow"></div>
+    </div>
+
+    <div class="orbit orbit-1"></div>
+    <div class="orbit orbit-2"></div>
+    <div class="orbit orbit-3"></div>
+
+    <div class="satellite-3d">
+        <span class="sat-body"></span>
+        <span class="sat-panel panel-left"></span>
+        <span class="sat-panel panel-right"></span>
+        <span class="sat-antenna"></span>
+    </div>
+
+</div>
+
+        <div class="eyebrow">
+            SATELLITE VISION SYSTEM
+        </div>
+
+        <h1>
+            TEXT-GUIDED<br>
+            <span>GROUNDING</span>
+        </h1>
+
+        <p>
+            Identify and highlight objects or regions
+            in the satellite observation using natural language.
+        </p>
+
+    </section>
+
+    <section class="analysis-card">
+
+        <div class="card-header">
+            <span>GROUNDING ANALYSIS</span>
+            <span id="status">CONNECTING...</span>
+        </div>
+
+        <div class="image-area">
+
+            <div class="image-placeholder">
+                SATELLITE IMAGE
+                <small id="fileName">
+                    Loading observation...
+                </small>
+            </div>
+
+        </div>
+
+        <div class="suggestions">
+
+            <button type="button" data-query="Show buildings">
+                SHOW BUILDINGS
+            </button>
+
+            <button type="button" data-query="Highlight roads">
+                HIGHLIGHT ROADS
+            </button>
+
+            <button type="button" data-query="Find water bodies">
+                FIND WATER BODIES
+            </button>
+
+            <button type="button" data-query="Locate vegetation">
+                LOCATE VEGETATION
+            </button>
+
+        </div>
+
+        <div class="query-row">
+
+            <input
+                id="groundingQuery"
+                type="text"
+                placeholder="Describe the object or region to locate..."
+            >
+
+            <button
+                id="runGrounding"
+                type="button"
+            >
+                ANALYZE
+            </button>
+
+        </div>
+
+        <div id="result" class="result-box">
+            Grounding workspace initialized.
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+const API_URL = "http://127.0.0.1:8000";
+
+let analysisId =
+    localStorage.getItem("analysisId");
+
+const fileName =
+    localStorage.getItem("primaryFileName");
+
+const mode =
+    localStorage.getItem("analysisMode");
+
+const fileNameElement =
+    document.getElementById("fileName");
+
+const missionElement =
+    document.getElementById("missionId");
+
+const statusElement =
+    document.getElementById("status");
+
+const queryInput =
+    document.getElementById("groundingQuery");
+
+const runButton =
+    document.getElementById("runGrounding");
+
+const result =
+    document.getElementById("result");
+
+
+/* ==========================================================
+   INITIAL PAGE
+========================================================== */
+
+fileNameElement.textContent =
+    fileName || "Observation registered";
+
+missionElement.textContent =
+    "ANALYSIS #" + (analysisId || "—");
+
+
+/* ==========================================================
+   RECOVER ANALYSIS IF ID IS MISSING
+========================================================== */
+
+async function recoverAnalysis() {
+
+    if (analysisId) {
+        statusElement.textContent =
+            "BACKEND REGISTERED";
+        return true;
+    }
+
+    if (!fileName) {
+        statusElement.textContent =
+            "NO OBSERVATION";
+        return false;
+    }
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/analysis/latest?primary_filename=${encodeURIComponent(fileName)}`
+        );
+
+        if (!response.ok) {
+            throw new Error("Analysis not found");
+        }
+
+        const data =
+            await response.json();
+
+        analysisId =
+            data.id;
+
+        localStorage.setItem(
+            "analysisId",
+            analysisId
+        );
+
+        localStorage.setItem(
+            "analysisMode",
+            data.analysis_mode || "grounding"
+        );
+
+        missionElement.textContent =
+            "ANALYSIS #" + analysisId;
+
+        statusElement.textContent =
+            "BACKEND REGISTERED";
+
+        return true;
+
+    } catch (error) {
+
+        statusElement.textContent =
+            "ANALYSIS NOT FOUND";
+
+        result.textContent =
+            "The satellite observation is not registered with the COSMO backend. Return to the upload page and initialize the observation.";
+
+        result.classList.add("error");
+
+        return false;
+    }
+}
+
+
+/* ==========================================================
+   SUGGESTION BUTTONS
+========================================================== */
+
+document
+    .querySelectorAll(".suggestions button")
+    .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            queryInput.value =
+                button.dataset.query;
+
+            queryInput.focus();
+
+        });
+
+    });
+
+
+/* ==========================================================
+   REAL AI ANALYSIS
+========================================================== */
+
+async function runGrounding() {
+
+    const query =
+        queryInput.value.trim();
+
+    if (!query) {
+
+        result.textContent =
+            "Enter a grounding query first.";
+
+        result.classList.add("error");
+
+        return;
+    }
+
+    runButton.disabled = true;
+
+    result.classList.remove("error");
+    result.classList.add("success");
+
+    result.textContent =
+        "COSMO AI is analyzing the satellite observation...\n\nPlease wait.";
+
+
+    try {
+
+        const valid =
+            await recoverAnalysis();
+
+        if (!valid) {
+            throw new Error(
+                "No registered analysis was found."
+            );
+        }
+
+
+        /*
+         * The current backend does not yet expose a separate
+         * /grounding endpoint.
+         *
+         * Therefore we use the existing multimodal /ask endpoint.
+         * This sends the actual satellite image to Qwen2.5-VL.
+         */
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "analysis_id",
+            analysisId
+        );
+
+        formData.append(
+            "question",
+            `Grounding task: ${query}
+
+Identify the object, region, or feature requested in the satellite image.
+
+Describe where it appears in the image using relative visual location such as:
+- upper left
+- upper right
+- center
+- lower left
+- lower right
+
+Describe the visible evidence that supports your answer.
+Do not invent coordinates or information that cannot be seen.`
+        );
+
+
+        const response =
+            await fetch(
+                `${API_URL}/ask`,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Grounding analysis failed."
+            );
+
+        }
+
+
+        result.textContent =
+            `GROUNDING RESULT\n\n${data.answer}\n\nCONFIDENCE: ${Math.round((data.confidence || 0.85) * 100)}%`;
+
+        statusElement.textContent =
+            "ANALYSIS COMPLETE";
+
+
+    } catch (error) {
+
+        console.error(
+            "Grounding error:",
+            error
+        );
+
+        result.classList.remove("success");
+        result.classList.add("error");
+
+        result.textContent =
+            "COSMO AI could not complete the grounding analysis.\n\n" +
+            error.message;
+
+        statusElement.textContent =
+            "ANALYSIS ERROR";
+
+    } finally {
+
+        runButton.disabled = false;
+
+    }
+}
+
+
+/* ==========================================================
+   ANALYZE BUTTON
+========================================================== */
+
+runButton.addEventListener(
+    "click",
+    runGrounding
+);
+
+
+/* ==========================================================
+   ENTER KEY
+========================================================== */
+
+queryInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            runGrounding();
+
+        }
+
+    }
+);
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+recoverAnalysis();
+
+</script>
+
+</body>
+</html>

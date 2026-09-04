@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cosmo Query | AI Workspace</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/workspace.css">
+
+</head>
+
+
+<body>
+
+<header class="workspace-header">
+
+    <a href="index.html" class="brand">
+        <span class="brand-symbol">◉</span>
+        COSMO<span class="brand-accent">QUERY</span>
+    </a>
+
+    <div class="workspace-title">
+        SATQUERY AI / ANALYSIS WORKSPACE
+    </div>
+
+    <div class="live-status">
+        <span class="status-dot"></span>
+        COSMO AGENT ONLINE
+    </div>
+
+</header>
+
+
+<main class="workspace">
+
+    <aside class="data-sidebar">
+
+        <div class="sidebar-heading">
+            <span>MISSION DATA</span>
+            <b id="missionCode">SQ-001</b>
+        </div>
+
+
+        <div class="data-section">
+
+            <span class="data-label">INPUTS</span>
+
+            <div class="data-item">
+                <span class="data-icon">◉</span>
+                <div>
+                    <small>OPTICAL</small>
+                    <strong id="opticalName">
+                        No file
+                    </strong>
+                </div>
+            </div>
+
+            <div class="data-item">
+                <span class="data-icon">◇</span>
+                <div>
+                    <small>SAR</small>
+                    <strong id="sarName">
+                        Not loaded
+                    </strong>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="data-section">
+
+            <span class="data-label">
+                SESSION CONTEXT
+            </span>
+
+            <div class="context-row">
+                <span>MODALITY</span>
+                <b id="modality">OPTICAL</b>
+            </div>
+
+            <div class="context-row">
+                <span>OBJECTS</span>
+                <b>--</b>
+            </div>
+
+            <div class="context-row">
+                <span>CONFIDENCE</span>
+                <b>--</b>
+            </div>
+
+        </div>
+
+
+        <div class="agent-mini">
+
+            <span class="data-label">
+                ACTIVE AGENT
+            </span>
+
+            <div class="agent-orb">
+                ✦
+            </div>
+
+            <strong>COSMO AGENT</strong>
+
+            <small>
+                Awaiting natural-language query
+            </small>
+
+        </div>
+
+    </aside>
+
+
+    <section class="viewer">
+
+        <div class="viewer-top">
+
+            <div>
+                <span class="viewer-label">
+                    SATELLITE IMAGE VIEWER
+                </span>
+
+                <strong id="viewerFilename">
+                    ANALYSIS IMAGE
+                </strong>
+            </div>
+
+            <div class="viewer-actions">
+                <button id="zoomOut">−</button>
+                <span id="zoomValue">100%</span>
+                <button id="zoomIn">+</button>
+                <button id="resetZoom">RESET</button>
+            </div>
+
+        </div>
+
+
+        <div class="image-stage" id="imageStage">
+
+            <div class="crosshair horizontal"></div>
+            <div class="crosshair vertical"></div>
+
+            <div class="satellite-placeholder">
+
+                <div class="placeholder-earth"></div>
+
+                <div class="placeholder-text">
+                    <span>IMAGE VIEWER</span>
+                    <strong>AWAITING ANALYSIS DATA</strong>
+                    <small>
+                        Upload imagery and query the Cosmo Agent
+                    </small>
+                </div>
+
+            </div>
+
+
+            <div class="scan-line"></div>
+
+            <div class="viewer-coordinates">
+                LAT 17.3850<br>
+                LON 78.4867
+            </div>
+
+            <div class="viewer-scale">
+                SCALE 1:25,000
+            </div>
+
+        </div>
+
+
+        <div class="viewer-controls">
+
+            <button id="highlightBtn">
+                ⌖ HIGHLIGHT
+            </button>
+
+            <button id="compareBtn">
+                ◫ COMPARE
+            </button>
+
+            <button id="hideOverlayBtn">
+                ◌ HIDE OVERLAY
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <aside class="chat-panel">
+
+        <div class="chat-header">
+
+            <div>
+                <span>CONVERSATIONAL AI</span>
+                <strong>COSMO AGENT</strong>
+            </div>
+
+            <div class="agent-live">
+                <span></span>
+                LIVE
+            </div>
+
+        </div>
+
+
+        <div class="chat-messages" id="chatMessages">
+
+            <div class="chat-message agent">
+
+                <div class="message-label">
+                    COSMO AGENT
+                </div>
+
+                <p>
+                    Mission data loaded. Ask me a question
+                    about the satellite imagery.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="suggested-questions">
+
+            <span>SUGGESTED</span>
+
+            <button>
+                What objects are visible?
+            </button>
+
+            <button>
+                Identify important regions.
+            </button>
+
+            <button>
+                What changed?
+            </button>
+
+        </div>
+
+
+        <div class="chat-input">
+
+            <textarea
+                id="questionInput"
+                placeholder="Ask Cosmo about the imagery..."
+            ></textarea>
+
+            <button id="sendQuestion">
+                ↗
+            </button>
+
+        </div>
+
+
+        <div class="execution-summary">
+
+            <div class="summary-title">
+                <span>EXECUTION SUMMARY</span>
+                <small id="agentState">
+                    READY
+                </small>
+            </div>
+
+            <div class="execution-step">
+                <span>✓</span>
+                Query understanding
+            </div>
+
+            <div class="execution-step">
+                <span>✓</span>
+                Context inspection
+            </div>
+
+            <div class="execution-step">
+                <span>○</span>
+                Specialist selection
+            </div>
+
+        </div>
+
+    </aside>
+
+</main>
+
+
+<script src="js/workspace.js"></script>
+
+</body>
+</html>

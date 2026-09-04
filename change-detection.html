@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>COSMO QUERY — Change Detection</title>
+
+    <style>
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+            background: #01060b;
+            color: #edf5ff;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           SPACE BACKGROUND
+        ========================================================= */
+
+        .space-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -10;
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 45% 35%,
+                    rgba(0, 105, 155, .13),
+                    transparent 42%
+                ),
+                radial-gradient(
+                    circle at 80% 75%,
+                    rgba(0, 65, 100, .08),
+                    transparent 40%
+                ),
+                #01060b;
+        }
+
+        .stars {
+            position: absolute;
+            inset: 0;
+
+            opacity: .45;
+
+            background-image:
+                radial-gradient(
+                    rgba(210, 240, 255, .8) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                87px 87px;
+
+            animation:
+                starsMove 25s linear infinite;
+        }
+
+        .grid-glow {
+            position: absolute;
+            inset: 0;
+
+            background-image:
+                linear-gradient(
+                    rgba(35, 155, 200, .045) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(35, 155, 200, .045) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                48px 48px;
+
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    black,
+                    transparent 85%
+                );
+        }
+
+
+        /* =========================================================
+           TOP BAR
+        ========================================================= */
+
+        .topbar {
+            width: 100%;
+            height: 72px;
+
+            padding:
+                0 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background:
+                rgba(1, 10, 18, .9);
+
+            border-bottom:
+                1px solid rgba(75, 190, 235, .15);
+
+            backdrop-filter:
+                blur(12px);
+
+            position: relative;
+            z-index: 30;
+        }
+
+        .brand strong {
+            display: block;
+
+            color: #eef7ff;
+
+            font-size: 18px;
+            letter-spacing: 4px;
+        }
+
+        .brand span {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #25bce9;
+
+            font-size: 9px;
+            letter-spacing: 3px;
+        }
+
+        #missionId {
+            color: #7892aa;
+
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .workspace {
+            width:
+                min(1180px, calc(100% - 50px));
+
+            margin:
+                0 auto;
+
+            padding:
+                80px 0 100px;
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            position: relative;
+
+            min-height: 520px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+
+            z-index: 10;
+
+            max-width: 760px;
+        }
+
+        .eyebrow {
+            margin-bottom: 25px;
+
+            color: #28bde8;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 4px;
+        }
+
+        .hero h1 {
+            margin: 0;
+
+            color: #f0f4fa;
+
+            font-size:
+                clamp(58px, 8vw, 108px);
+
+            line-height: .88;
+
+            letter-spacing: -6px;
+
+            font-weight: 900;
+        }
+
+        .hero h1 span {
+            color: #cbd5e1;
+        }
+
+        .hero p {
+            max-width: 720px;
+
+            margin:
+                38px 0 0;
+
+            color: #aebdca;
+
+            font-size: 18px;
+
+            line-height: 1.55;
+        }
+
+
+        /* =========================================================
+           3D VISUAL
+        ========================================================= */
+
+        .hero-3d {
+            position: absolute;
+
+            left: -90px;
+            top: 0;
+
+            width: 600px;
+            height: 520px;
+
+            pointer-events: none;
+
+            z-index: 2;
+
+            perspective:
+                900px;
+
+            transform-style:
+                preserve-3d;
+
+            opacity: .95;
+
+            filter:
+                drop-shadow(
+                    0 0 30px rgba(0, 180, 240, .12)
+                );
+        }
+
+
+        /* =========================================================
+           EARTH
+        ========================================================= */
+
+        .earth-3d {
+            position: absolute;
+
+            width: 270px;
+            height: 270px;
+
+            left: 150px;
+            top: 125px;
+
+            border-radius: 50%;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 33% 28%,
+                    #b7f2ff 0%,
+                    #35b9df 12%,
+                    #0877a4 33%,
+                    #064464 57%,
+                    #021724 78%,
+                    #000a11 100%
+                );
+
+            border:
+                1px solid rgba(
+                    90,
+                    220,
+                    255,
+                    .5
+                );
+
+            box-shadow:
+                0 0 25px
+                    rgba(25, 195, 245, .35),
+
+                0 0 80px
+                    rgba(0, 120, 190, .2),
+
+                inset
+                    -48px -20px 70px
+                    rgba(0, 0, 0, .85);
+
+            transform-style:
+                preserve-3d;
+
+            animation:
+                earthFloat
+                6s ease-in-out
+                infinite;
+        }
+
+
+        /* =========================================================
+           EARTH GRID
+        ========================================================= */
+
+        .earth-grid {
+            position: absolute;
+
+            inset: -8px;
+
+            border-radius: 50%;
+
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent 0 19px,
+                    rgba(120, 230, 255, .18) 20px,
+                    transparent 21px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0 27px,
+                    rgba(120, 230, 255, .14) 28px,
+                    transparent 29px
+                );
+
+            transform:
+                rotateX(68deg)
+                scaleY(.42);
+
+            animation:
+                gridRotate
+                11s linear
+                infinite;
+        }
+
+
+        /* =========================================================
+           EARTH ATMOSPHERE
+        ========================================================= */
+
+        .earth-glow {
+            position: absolute;
+
+            inset: -15px;
+
+            border-radius: 50%;
+
+            border:
+                1px solid
+                rgba(80, 220, 255, .4);
+
+            box-shadow:
+                0 0 22px
+                    rgba(40, 200, 255, .25),
+
+                inset
+                    0 0 25px
+                    rgba(30, 180, 240, .15);
+        }
+
+
+        /* =========================================================
+           CHANGE SCAN
+        ========================================================= */
+
+        .change-scan {
+            position: absolute;
+
+            top: -10%;
+
+            left: -50%;
+
+            width: 38%;
+            height: 120%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(100, 240, 255, .55),
+                    rgba(100, 240, 255, .08),
+                    transparent
+                );
+
+            filter:
+                blur(4px);
+
+            transform:
+                skewX(-12deg);
+
+            animation:
+                scanEarth
+                4.5s ease-in-out
+                infinite;
+        }
+
+
+        /* =========================================================
+           ORBIT RINGS
+        ========================================================= */
+
+        .orbit {
+            position: absolute;
+
+            border-radius: 50%;
+
+            border:
+                1px solid
+                rgba(55, 205, 245, .3);
+
+            transform-style:
+                preserve-3d;
+        }
+
+        .orbit-1 {
+            width: 370px;
+            height: 145px;
+
+            left: 100px;
+            top: 185px;
+
+            transform:
+                rotateX(68deg)
+                rotateZ(-18deg);
+
+            animation:
+                orbitOne
+                12s linear
+                infinite;
+        }
+
+        .orbit-2 {
+            width: 420px;
+            height: 165px;
+
+            left: 75px;
+            top: 170px;
+
+            border-color:
+                rgba(55, 185, 230, .18);
+
+            transform:
+                rotateX(68deg)
+                rotateZ(42deg);
+
+            animation:
+                orbitTwo
+                17s linear
+                infinite reverse;
+        }
+
+        .orbit-3 {
+            width: 310px;
+            height: 410px;
+
+            left: 130px;
+            top: 55px;
+
+            border-color:
+                rgba(75, 215, 255, .13);
+
+            transform:
+                rotateY(65deg)
+                rotateZ(20deg);
+
+            animation:
+                orbitThree
+                21s linear
+                infinite;
+        }
+
+
+        /* =========================================================
+           TIME NODES
+        ========================================================= */
+
+        .time-node {
+            position: absolute;
+
+            width: 62px;
+            height: 62px;
+
+            border-radius: 50%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                rgba(2, 17, 28, .9);
+
+            border:
+                1px solid
+                rgba(65, 210, 245, .6);
+
+            box-shadow:
+                0 0 20px
+                rgba(20, 190, 240, .2);
+
+            z-index: 8;
+
+            backdrop-filter:
+                blur(8px);
+        }
+
+        .time-node span {
+            color: #ecfaff;
+
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .time-node small {
+            margin-top: 3px;
+
+            color: #30c6ec;
+
+            font-size: 7px;
+            letter-spacing: 1px;
+        }
+
+        .time-before {
+            left: 52px;
+            top: 85px;
+
+            animation:
+                nodeBefore
+                5s ease-in-out
+                infinite;
+        }
+
+        .time-after {
+            right: 18px;
+            bottom: 58px;
+
+            animation:
+                nodeAfter
+                5s ease-in-out
+                infinite;
+        }
+
+
+        /* =========================================================
+           SATELLITE
+        ========================================================= */
+
+        .satellite-3d {
+            position: absolute;
+
+            left: 405px;
+            top: 82px;
+
+            width: 90px;
+            height: 50px;
+
+            transform-style:
+                preserve-3d;
+
+            z-index: 12;
+
+            animation:
+                satelliteOrbit
+                12s linear
+                infinite;
+        }
+
+        .sat-body {
+            position: absolute;
+
+            left: 30px;
+            top: 13px;
+
+            width: 32px;
+            height: 23px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #edfaff,
+                    #587a8c
+                );
+
+            border:
+                1px solid
+                rgba(150, 230, 255, .75);
+
+            box-shadow:
+                0 0 14px
+                rgba(40, 205, 255, .45);
+
+            transform:
+                translateZ(12px);
+        }
+
+        .sat-panel {
+            position: absolute;
+
+            top: 15px;
+
+            width: 27px;
+            height: 19px;
+
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    #052d46 0 4px,
+                    #1585ad 5px,
+                    #052d46 6px
+                );
+
+            border:
+                1px solid
+                rgba(60, 195, 235, .65);
+        }
+
+        .panel-left {
+            left: 0;
+
+            transform:
+                rotateY(20deg);
+        }
+
+        .panel-right {
+            right: 0;
+
+            transform:
+                rotateY(-20deg);
+        }
+
+        .sat-antenna {
+            position: absolute;
+
+            left: 44px;
+            top: -14px;
+
+            width: 1px;
+            height: 29px;
+
+            background: #75e3ff;
+
+            box-shadow:
+                0 0 8px
+                rgba(70, 220, 255, .9);
+
+            transform:
+                rotate(20deg);
+        }
+
+
+        /* =========================================================
+           ANALYSIS CARD
+        ========================================================= */
+
+        .analysis-card {
+            position: relative;
+
+            z-index: 20;
+
+            padding: 30px;
+
+            background:
+                rgba(3, 13, 23, .94);
+
+            border:
+                1px solid
+                rgba(60, 180, 225, .2);
+
+            box-shadow:
+                0 25px 90px
+                rgba(0, 0, 0, .5),
+
+                inset
+                0 0 45px
+                rgba(0, 100, 160, .035);
+        }
+
+        .card-header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding-bottom: 18px;
+
+            border-bottom:
+                1px solid
+                rgba(90, 160, 190, .14);
+
+            color: #dceaf4;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+        }
+
+        #status {
+            color: #2dc5ed;
+        }
+
+
+        /* =========================================================
+           OBSERVATION GRID
+        ========================================================= */
+
+        .observation-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 16px;
+
+            margin-top: 24px;
+        }
+
+        .observation {
+            position: relative;
+
+            min-height: 260px;
+
+            overflow: hidden;
+
+            border:
+                1px solid
+                rgba(55, 180, 225, .2);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 35, 52, .65),
+                    rgba(1, 9, 16, .9)
+                );
+        }
+
+        .observation-label {
+            position: absolute;
+
+            top: 15px;
+            left: 15px;
+
+            z-index: 5;
+
+            padding: 7px 10px;
+
+            background:
+                rgba(0, 10, 18, .82);
+
+            border:
+                1px solid
+                rgba(70, 195, 230, .3);
+
+            color: #42c9ed;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+        }
+
+        .observation-content {
+            position: absolute;
+
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 25px;
+
+            text-align: center;
+
+            color: #69849a;
+
+            font-size: 12px;
+
+            letter-spacing: 1px;
+        }
+
+        .observation-content strong {
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #a9c3d3;
+
+            font-size: 14px;
+        }
+
+        .observation-content small {
+            color: #60788b;
+
+            word-break: break-word;
+        }
+
+
+        /* =========================================================
+           UPLOAD IMAGE PREVIEW
+        ========================================================= */
+
+        .observation img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            display: none;
+
+            opacity: .9;
+        }
+
+        .observation.has-image img {
+            display: block;
+        }
+
+        .observation.has-image
+        .observation-content {
+            display: none;
+        }
+
+
+        /* =========================================================
+           CONTROLS
+        ========================================================= */
+
+        .control-row {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+        .suggestion {
+            padding: 12px 16px;
+
+            background:
+                rgba(8, 34, 49, .8);
+
+            border:
+                1px solid
+                rgba(55, 185, 225, .3);
+
+            color: #c2eaf7;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            cursor: pointer;
+
+            transition:
+                .2s ease;
+        }
+
+        .suggestion:hover {
+            border-color: #36c9f0;
+
+            background:
+                rgba(15, 75, 100, .8);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =========================================================
+           QUERY
+        ========================================================= */
+
+        .query-row {
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+        #changeQuery {
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 17px;
+
+            outline: none;
+
+            background:
+                #020a12;
+
+            border:
+                1px solid
+                rgba(80, 160, 195, .3);
+
+            color: #eef8ff;
+
+            font-size: 14px;
+        }
+
+        #changeQuery:focus {
+            border-color:
+                #29bde8;
+
+            box-shadow:
+                0 0 20px
+                rgba(30, 185, 230, .1);
+        }
+
+        #changeQuery::placeholder {
+            color: #61798d;
+        }
+
+        #runChange {
+            min-width: 150px;
+
+            padding: 0 28px;
+
+            background:
+                #0b9fc9;
+
+            border:
+                1px solid
+                #39c9ee;
+
+            color: white;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            cursor: pointer;
+
+            transition:
+                .2s ease;
+        }
+
+        #runChange:hover {
+            background:
+                #11b4df;
+        }
+
+        #runChange:disabled {
+            opacity: .5;
+
+            cursor: wait;
+        }
+
+
+        /* =========================================================
+           RESULT
+        ========================================================= */
+
+        .result-box {
+            margin-top: 20px;
+
+            min-height: 100px;
+
+            padding: 20px;
+
+            background:
+                rgba(0, 8, 15, .85);
+
+            border-left:
+                2px solid
+                #25bce8;
+
+            color: #aebfcd;
+
+            font-size: 14px;
+
+            line-height: 1.65;
+
+            white-space: pre-wrap;
+        }
+
+        .result-box.success {
+            color: #dff4ff;
+        }
+
+        .result-box.error {
+            color: #ff9a9a;
+
+            border-left-color:
+                #e15d5d;
+        }
+
+
+        /* =========================================================
+           FOOTER STATUS
+        ========================================================= */
+
+        .system-status {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 16px;
+
+            color: #526b7e;
+
+            font-size: 9px;
+
+            letter-spacing: 2px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #28c8ed;
+
+            box-shadow:
+                0 0 10px
+                rgba(40, 200, 240, .8);
+
+            animation:
+                statusPulse
+                2s ease-in-out
+                infinite;
+        }
+
+
+        /* =========================================================
+           ANIMATIONS
+        ========================================================= */
+
+        @keyframes earthFloat {
+
+            0%,
+            100% {
+                transform:
+                    translateY(0)
+                    rotateY(-8deg);
+            }
+
+            50% {
+                transform:
+                    translateY(-12px)
+                    rotateY(8deg);
+            }
+        }
+
+        @keyframes gridRotate {
+
+            from {
+                transform:
+                    rotateX(68deg)
+                    rotateZ(0deg)
+                    scaleY(.42);
+            }
+
+            to {
+                transform:
+                    rotateX(68deg)
+                    rotateZ(360deg)
+                    scaleY(.42);
+            }
+        }
+
+        @keyframes scanEarth {
+
+            0% {
+                left: -50%;
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            75% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 115%;
+                opacity: 0;
+            }
+        }
+
+        @keyframes orbitOne {
+
+            from {
+                transform:
+                    rotateX(68deg)
+                    rotateZ(-18deg);
+            }
+
+            to {
+                transform:
+                    rotateX(68deg)
+                    rotateZ(342deg);
+            }
+        }
+
+        @keyframes orbitTwo {
+
+            from {
+                transform:
+                    rotateX(68deg)
+                    rotateZ(42deg);
+            }
+
+            to {
+                transform:
+                    rotateX(68deg)
+                    rotateZ(-318deg);
+            }
+        }
+
+        @keyframes orbitThree {
+
+            from {
+                transform:
+                    rotateY(65deg)
+                    rotateZ(20deg);
+            }
+
+            to {
+                transform:
+                    rotateY(65deg)
+                    rotateZ(380deg);
+            }
+        }
+
+        @keyframes satelliteOrbit {
+
+            0% {
+                transform:
+                    translate(0, 0)
+                    rotateZ(0deg);
+            }
+
+            25% {
+                transform:
+                    translate(50px, 75px)
+                    rotateZ(90deg);
+            }
+
+            50% {
+                transform:
+                    translate(-20px, 155px)
+                    rotateZ(180deg);
+            }
+
+            75% {
+                transform:
+                    translate(-105px, 65px)
+                    rotateZ(270deg);
+            }
+
+            100% {
+                transform:
+                    translate(0, 0)
+                    rotateZ(360deg);
+            }
+        }
+
+        @keyframes nodeBefore {
+
+            0%,
+            100% {
+                transform:
+                    translateY(0);
+                opacity: .65;
+            }
+
+            50% {
+                transform:
+                    translateY(-12px);
+                opacity: 1;
+            }
+        }
+
+        @keyframes nodeAfter {
+
+            0%,
+            100% {
+                transform:
+                    translateY(0);
+                opacity: .65;
+            }
+
+            50% {
+                transform:
+                    translateY(12px);
+                opacity: 1;
+            }
+        }
+
+        @keyframes statusPulse {
+
+            0%,
+            100% {
+                opacity: .45;
+                transform: scale(.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes starsMove {
+
+            from {
+                transform:
+                    translateY(0);
+            }
+
+            to {
+                transform:
+                    translateY(87px);
+            }
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 850px) {
+
+            .workspace {
+                width:
+                    calc(100% - 28px);
+
+                padding-top:
+                    45px;
+            }
+
+            .topbar {
+                padding:
+                    0 16px;
+            }
+
+            .hero {
+                min-height:
+                    620px;
+            }
+
+            .hero-3d {
+                left:
+                    50%;
+
+                transform:
+                    translateX(-50%)
+                    scale(.78);
+
+                opacity:
+                    .3;
+            }
+
+            .hero-content {
+                padding-top:
+                    220px;
+            }
+
+            .observation-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .query-row {
+                flex-direction:
+                    column;
+            }
+
+            #runChange {
+                min-height:
+                    50px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .hero h1 {
+                font-size:
+                    54px;
+
+                letter-spacing:
+                    -3px;
+            }
+
+            .hero p {
+                font-size:
+                    15px;
+            }
+
+            .analysis-card {
+                padding:
+                    18px;
+            }
+
+            .card-header {
+                flex-direction:
+                    column;
+
+                align-items:
+                    flex-start;
+
+                gap:
+                    8px;
+            }
+
+            .control-row {
+                flex-direction:
+                    column;
+            }
+
+            .suggestion {
+                width:
+                    100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     BACKGROUND
+========================================================= -->
+
+<div class="space-bg">
+    <div class="stars"></div>
+    <div class="grid-glow"></div>
+</div>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <strong>
+            COSMO QUERY
+        </strong>
+
+        <span>
+            SATQUERY AI SYSTEM ONLINE
+        </span>
+
+    </div>
+
+    <div id="missionId">
+        ANALYSIS
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="workspace">
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="hero">
+
+
+        <!-- 3D VISUAL -->
+
+        <div class="hero-3d">
+
+
+            <!-- EARTH -->
+
+            <div class="earth-3d">
+
+                <div class="earth-grid"></div>
+
+                <div class="earth-glow"></div>
+
+                <div class="change-scan"></div>
+
+            </div>
+
+
+            <!-- ORBITS -->
+
+            <div class="orbit orbit-1"></div>
+
+            <div class="orbit orbit-2"></div>
+
+            <div class="orbit orbit-3"></div>
+
+
+            <!-- BEFORE -->
+
+            <div class="time-node time-before">
+
+                <span>
+                    T₁
+                </span>
+
+                <small>
+                    BEFORE
+                </small>
+
+            </div>
+
+
+            <!-- AFTER -->
+
+            <div class="time-node time-after">
+
+                <span>
+                    T₂
+                </span>
+
+                <small>
+                    AFTER
+                </small>
+
+            </div>
+
+
+            <!-- SATELLITE -->
+
+            <div class="satellite-3d">
+
+                <span class="sat-body"></span>
+
+                <span
+                    class="sat-panel panel-left">
+                </span>
+
+                <span
+                    class="sat-panel panel-right">
+                </span>
+
+                <span class="sat-antenna"></span>
+
+            </div>
+
+        </div>
+
+
+        <!-- HERO TEXT -->
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                MULTITEMPORAL EARTH OBSERVATION
+            </div>
+
+            <h1>
+                CHANGE<br>
+                <span>DETECTION</span>
+            </h1>
+
+            <p>
+                Compare two satellite observations
+                and identify meaningful changes
+                across time.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ANALYSIS
+    ====================================================== -->
+
+    <section class="analysis-card">
+
+
+        <div class="card-header">
+
+            <span>
+                TEMPORAL ANALYSIS
+            </span>
+
+            <span id="status">
+                CONNECTING...
+            </span>
+
+        </div>
+
+
+        <!-- OBSERVATIONS -->
+
+        <div class="observation-grid">
+
+
+            <!-- OBSERVATION A -->
+
+            <div
+                class="observation"
+                id="observationA"
+            >
+
+                <div class="observation-label">
+                    OBSERVATION A · T₁
+                </div>
+
+                <img
+                    id="imageA"
+                    alt="Observation A"
+                >
+
+                <div class="observation-content">
+
+                    <div>
+
+                        <strong>
+                            OBSERVATION A
+                        </strong>
+
+                        <small
+                            id="fileNameA">
+                            Loading observation...
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- OBSERVATION B -->
+
+            <div
+                class="observation"
+                id="observationB"
+            >
+
+                <div class="observation-label">
+                    OBSERVATION B · T₂
+                </div>
+
+                <img
+                    id="imageB"
+                    alt="Observation B"
+                >
+
+                <div class="observation-content">
+
+                    <div>
+
+                        <strong>
+                            OBSERVATION B
+                        </strong>
+
+                        <small
+                            id="fileNameB">
+                            Loading observation...
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUGGESTIONS -->
+
+        <div class="control-row">
+
+            <button
+                class="suggestion"
+                type="button"
+                data-query="Identify changes between the two observations"
+            >
+                IDENTIFY CHANGES
+            </button>
+
+            <button
+                class="suggestion"
+                type="button"
+                data-query="Find newly constructed buildings"
+            >
+                NEW BUILDINGS
+            </button>
+
+            <button
+                class="suggestion"
+                type="button"
+                data-query="Detect changes in roads and infrastructure"
+            >
+                ROAD CHANGES
+            </button>
+
+            <button
+                class="suggestion"
+                type="button"
+                data-query="Detect changes in vegetation"
+            >
+                VEGETATION CHANGE
+            </button>
+
+            <button
+                class="suggestion"
+                type="button"
+                data-query="Detect changes in water bodies"
+            >
+                WATER CHANGE
+            </button>
+
+        </div>
+
+
+        <!-- QUERY -->
+
+        <div class="query-row">
+
+            <input
+                id="changeQuery"
+                type="text"
+                placeholder="Describe the change you want to detect..."
+            >
+
+            <button
+                id="runChange"
+                type="button"
+            >
+                ANALYZE CHANGE
+            </button>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div
+            id="result"
+            class="result-box"
+        >
+            Temporal analysis workspace initialized.
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <span>
+                COSMO AI · MULTITEMPORAL ANALYSIS READY
+            </span>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+const API_URL =
+    "http://127.0.0.1:8000";
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+let analysisId =
+    localStorage.getItem("analysisId");
+
+let primaryFileName =
+    localStorage.getItem("primaryFileName");
+
+let secondaryFileName =
+    localStorage.getItem("secondaryFileName");
+
+let analysisMode =
+    localStorage.getItem("analysisMode");
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const missionId =
+    document.getElementById("missionId");
+
+const status =
+    document.getElementById("status");
+
+const fileNameA =
+    document.getElementById("fileNameA");
+
+const fileNameB =
+    document.getElementById("fileNameB");
+
+const queryInput =
+    document.getElementById("changeQuery");
+
+const runButton =
+    document.getElementById("runChange");
+
+const result =
+    document.getElementById("result");
+
+
+/* =========================================================
+   INITIAL DISPLAY
+========================================================= */
+
+missionId.textContent =
+    "ANALYSIS #" +
+    (analysisId || "—");
+
+fileNameA.textContent =
+    primaryFileName ||
+    "Observation A registered";
+
+fileNameB.textContent =
+    secondaryFileName ||
+    "Observation B registered";
+
+
+/* =========================================================
+   SUGGESTIONS
+========================================================= */
+
+document
+    .querySelectorAll(".suggestion")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                queryInput.value =
+                    button.dataset.query;
+
+                queryInput.focus();
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   RECOVER ANALYSIS
+========================================================= */
+
+async function recoverAnalysis() {
+
+    if (analysisId) {
+
+        status.textContent =
+            "BACKEND REGISTERED";
+
+        return true;
+    }
+
+
+    if (!primaryFileName) {
+
+        status.textContent =
+            "NO OBSERVATION";
+
+        return false;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/analysis/latest?primary_filename=${encodeURIComponent(primaryFileName)}`
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Analysis not found"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        analysisId =
+            data.id;
+
+
+        localStorage.setItem(
+            "analysisId",
+            analysisId
+        );
+
+
+        if (data.primary_filename) {
+
+            primaryFileName =
+                data.primary_filename;
+
+            localStorage.setItem(
+                "primaryFileName",
+                primaryFileName
+            );
+
+        }
+
+
+        if (data.secondary_filename) {
+
+            secondaryFileName =
+                data.secondary_filename;
+
+            localStorage.setItem(
+                "secondaryFileName",
+                secondaryFileName
+            );
+
+        }
+
+
+        missionId.textContent =
+            "ANALYSIS #" +
+            analysisId;
+
+
+        fileNameA.textContent =
+            primaryFileName ||
+            "Observation A registered";
+
+
+        fileNameB.textContent =
+            secondaryFileName ||
+            "Observation B registered";
+
+
+        status.textContent =
+            "BACKEND REGISTERED";
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+        status.textContent =
+            "ANALYSIS NOT FOUND";
+
+        result.classList.add(
+            "error"
+        );
+
+        result.textContent =
+            "The temporal observation could not be registered with the COSMO backend.";
+
+        return false;
+    }
+}
+
+
+/* =========================================================
+   RUN CHANGE DETECTION
+========================================================= */
+
+async function runChangeDetection() {
+
+    const query =
+        queryInput.value.trim();
+
+
+    if (!query) {
+
+        result.classList.add(
+            "error"
+        );
+
+        result.textContent =
+            "Enter a change-detection query first.";
+
+        return;
+    }
+
+
+    runButton.disabled =
+        true;
+
+
+    result.classList.remove(
+        "error"
+    );
+
+    result.classList.add(
+        "success"
+    );
+
+
+    result.textContent =
+        "COSMO AI is comparing the satellite observations...\n\nPlease wait.";
+
+
+    try {
+
+
+        /* ---------------------------------------------------
+           ENSURE ANALYSIS EXISTS
+        --------------------------------------------------- */
+
+        const valid =
+            await recoverAnalysis();
+
+
+        if (!valid) {
+
+            throw new Error(
+                "No registered analysis was found."
+            );
+
+        }
+
+
+        /* ---------------------------------------------------
+           CURRENT BACKEND FALLBACK
+           
+           The current server exposes /ask rather than a
+           dedicated /change-detection endpoint.
+
+           We therefore send the change question through
+           the existing multimodal AI endpoint.
+        --------------------------------------------------- */
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "analysis_id",
+            analysisId
+        );
+
+
+        formData.append(
+            "question",
+            `Multitemporal change detection task:
+
+${query}
+
+Analyze the available satellite observation carefully.
+
+Determine what visible geographic, land-cover,
+infrastructure, vegetation, water, or urban changes
+can be identified.
+
+If two temporal observations are available,
+compare them conceptually.
+
+Describe:
+1. What changed
+2. Where the change appears
+3. The visible evidence
+4. Whether the change appears significant
+
+Do not invent coordinates, dates, sensor information,
+or changes that cannot be supported by the imagery.`
+        );
+
+
+        /* ---------------------------------------------------
+           SEND TO COSMO AI
+        --------------------------------------------------- */
+
+        const response =
+            await fetch(
+                `${API_URL}/ask`,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Change detection failed."
+            );
+
+        }
+
+
+        /* ---------------------------------------------------
+           DISPLAY RESULT
+        --------------------------------------------------- */
+
+        const confidence =
+            Math.round(
+                (data.confidence || .85)
+                * 100
+            );
+
+
+        result.textContent =
+            `CHANGE DETECTION RESULT\n\n` +
+            `${data.answer}\n\n` +
+            `CONFIDENCE: ${confidence}%`;
+
+
+        status.textContent =
+            "ANALYSIS COMPLETE";
+
+
+    } catch (error) {
+
+        console.error(
+            "Change detection error:",
+            error
+        );
+
+
+        result.classList.remove(
+            "success"
+        );
+
+        result.classList.add(
+            "error"
+        );
+
+
+        result.textContent =
+            "COSMO AI could not complete the change analysis.\n\n" +
+            error.message;
+
+
+        status.textContent =
+            "ANALYSIS ERROR";
+
+
+    } finally {
+
+        runButton.disabled =
+            false;
+
+    }
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+runButton.addEventListener(
+    "click",
+    runChangeDetection
+);
+
+
+/* =========================================================
+   ENTER KEY
+========================================================= */
+
+queryInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            runChangeDetection();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+recoverAnalysis();
+
+</script>
+
+</body>
+</html>

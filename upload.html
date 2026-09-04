@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>COSMO QUERY — Observation Inputs</title>
+
+    <link rel="stylesheet" href="css/upload.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     COSMO QUERY — 3D BACKGROUND
+===================================================== -->
+
+<div id="upload-space-background">
+
+    <canvas id="upload-space-canvas"></canvas>
+
+    <div class="upload-space-vignette"></div>
+
+    <div class="upload-space-scanline"></div>
+
+</div>
+
+
+<!-- =====================================================
+     SPACE BACKGROUND
+===================================================== -->
+
+<div class="space-bg">
+
+    <div class="stars"></div>
+
+    <div class="grid-glow"></div>
+
+</div>
+
+
+<!-- =====================================================
+     TOP NAV
+===================================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <span>COSMO</span>
+
+        <strong>QUERY</strong>
+
+    </div>
+
+
+    <div class="system-status">
+
+        <span class="status-dot"></span>
+
+        SATQUERY AI SYSTEM ONLINE
+
+    </div>
+
+
+    <div class="coordinates">
+
+        17.3850° N / 78.4867° E
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="mission-page">
+
+
+    <!-- =================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <section class="page-header">
+
+
+        <div>
+
+            <div class="eyebrow">
+
+                MISSION CONTROL / 01
+
+            </div>
+
+
+            <h1>
+
+                Observation
+
+                <span>Inputs</span>
+
+            </h1>
+
+
+            <p>
+
+                Upload satellite observations to initialize
+                multimodal Earth intelligence.
+
+            </p>
+
+        </div>
+
+
+        <div class="system-card">
+
+            <div class="system-card-title">
+
+                SATQUERY AI
+
+            </div>
+
+
+            <div class="system-card-value">
+
+                READY
+
+            </div>
+
+
+            <div class="system-card-line"></div>
+
+
+            <small>
+
+                MULTIMODAL ANALYSIS ENGINE
+
+            </small>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         INPUT PANEL
+    ================================================== -->
+
+    <section class="input-panel">
+
+
+        <!-- PANEL LABEL -->
+
+        <div class="panel-label">
+
+            <span>01</span>
+
+            SENSOR INPUTS
+
+        </div>
+
+
+
+        <!-- =================================================
+             SENSOR GRID
+        ================================================== -->
+
+        <div class="sensor-grid">
+
+
+            <!-- =================================================
+                 PRIMARY SENSOR
+            ================================================== -->
+
+            <div class="sensor-card primary">
+
+
+                <div class="sensor-number">
+
+                    01 / PRIMARY SENSOR
+
+                </div>
+
+
+                <div class="sensor-title">
+
+                    OPTICAL
+
+                </div>
+
+
+                <div class="sensor-description">
+
+                    Visible / multispectral satellite observation
+
+                </div>
+
+
+
+                <!-- PRIMARY UPLOAD -->
+
+                <label
+                    class="upload-zone"
+                    for="primaryImage"
+                >
+
+
+                    <div class="upload-icon">
+
+                        +
+
+                    </div>
+
+
+                    <div class="upload-main">
+
+                        DROP PRIMARY IMAGE
+
+                    </div>
+
+
+                    <div class="upload-sub">
+
+                        <div class="upload-sub">
+                                GEOTIFF / JP2 / PNG / JPG / PDF
+                        </div>
+
+                    </div>
+
+
+                    <div class="upload-button">
+
+                        SELECT FILE
+
+                    </div>
+
+
+                    <input
+                        type="file"
+                        id="primaryImage"
+                        name="primary_image"
+                        accept=".tif,.tiff,.jp2,.png,.jpg,.jpeg,.pdf,application/pdf"
+                        hidden
+                    >
+
+                </label>
+
+
+                <!-- PRIMARY PREVIEW -->
+
+                <div
+                    id="primaryPreview"
+                    class="preview"
+                ></div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SECONDARY SENSOR
+            ================================================== -->
+
+            <div class="sensor-card secondary">
+
+
+                <div class="sensor-number">
+
+                    02 / SECONDARY SENSOR
+
+                </div>
+
+
+                <div class="sensor-title">
+
+                    SAR / TEMPORAL
+
+                </div>
+
+
+                <div class="sensor-description">
+
+                    Radar observation or second-date imagery
+
+                </div>
+
+
+
+                <!-- SECONDARY UPLOAD -->
+
+                <label
+                    class="upload-zone"
+                    for="secondaryImage"
+                >
+
+
+                    <div class="upload-icon">
+
+                        +
+
+                    </div>
+
+
+                    <div class="upload-main">
+
+                        DROP SECONDARY IMAGE
+
+                    </div>
+
+
+                    
+
+                        <div class="upload-sub">
+                                GEOTIFF / JP2 / PNG / JPG / PDF
+                        </div>
+
+    
+
+
+                    <div class="upload-button">
+
+                        SELECT FILE
+
+                    </div>
+
+
+                    <input
+                        type="file"
+                        id="secondaryImage"
+                        name="secondary_image"
+                        accept=".tif,.tiff,.jp2,.png,.jpg,.jpeg,.pdf,application/pdf"
+                        hidden
+                    >
+
+                </label>
+
+
+                <!-- SECONDARY PREVIEW -->
+
+                <div
+                    id="secondaryPreview"
+                    class="preview"
+                ></div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             ANALYSIS MODE
+        ================================================== -->
+
+        <div class="mode-section">
+
+
+            <div class="panel-label">
+
+                <span>02</span>
+
+                ANALYSIS MODE
+
+            </div>
+
+
+
+            <div class="mode-grid">
+
+
+                <!-- VQA -->
+
+                <button
+                    class="mode-card active"
+                    data-mode="vqa"
+                    type="button"
+                >
+
+                    <div class="mode-icon">
+
+                        ◉
+
+                    </div>
+
+
+                    <div class="mode-content">
+
+                        <strong>
+
+                            VISION Q&amp;A
+
+                        </strong>
+
+                        <span>
+
+                            Single image analysis
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="mode-code">
+
+                        01
+
+                    </div>
+
+                </button>
+
+
+
+                <!-- GROUNDING -->
+
+                <button
+                    class="mode-card"
+                    data-mode="grounding"
+                    type="button"
+                >
+
+                    <div class="mode-icon">
+
+                        ⌖
+
+                    </div>
+
+
+                    <div class="mode-content">
+
+                        <strong>
+
+                            GROUNDING
+
+                        </strong>
+
+                        <span>
+
+                            Locate visual regions
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="mode-code">
+
+                        02
+
+                    </div>
+
+                </button>
+
+
+
+                <!-- CHANGE DETECTION -->
+
+                <button
+                    class="mode-card"
+                    data-mode="change_detection"
+                    type="button"
+                >
+
+                    <div class="mode-icon">
+
+                        ◫
+
+                    </div>
+
+
+                    <div class="mode-content">
+
+                        <strong>
+
+                            CHANGE DETECTION
+
+                        </strong>
+
+                        <span>
+
+                            Compare observations
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="mode-code">
+
+                        03
+
+                    </div>
+
+                </button>
+
+
+
+                <!-- OPTICAL + SAR -->
+
+                <button
+                    class="mode-card"
+                    data-mode="optical_sar"
+                    type="button"
+                >
+
+                    <div class="mode-icon">
+
+                        ◇
+
+                    </div>
+
+
+                    <div class="mode-content">
+
+                        <strong>
+
+                            OPTICAL + SAR
+
+                        </strong>
+
+                        <span>
+
+                            Multimodal fusion
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="mode-code">
+
+                        04
+
+                    </div>
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 INITIALIZE BUTTON
+            ================================================== -->
+
+            <button
+                id="initializeBtn"
+                type="button"
+                disabled
+            >
+
+                INITIALIZE ANALYSIS →
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             TELEMETRY
+        ================================================== -->
+
+        <section class="telemetry">
+
+
+            <div>
+
+                <span>MISSION</span>
+
+                SATQUERY-01
+
+            </div>
+
+
+            <div>
+
+                <span>ENGINE</span>
+
+                MULTIMODAL AGENT
+
+            </div>
+
+
+            <div>
+
+                <span>INPUT</span>
+
+                GEO-IMAGERY
+
+            </div>
+
+
+            <div>
+
+                <span>STATUS</span>
+
+                <b>READY</b>
+
+            </div>
+
+
+        </section>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     PROCESSING TRANSITION OVERLAY
+===================================================== -->
+
+<div
+    id="uploadOverlay"
+    class="upload-overlay"
+>
+
+
+    <div class="overlay-core">
+
+
+        <div class="radar">
+
+            <div class="radar-ring ring-a"></div>
+
+            <div class="radar-ring ring-b"></div>
+
+            <div class="radar-sweep"></div>
+
+            <div class="radar-center"></div>
+
+        </div>
+
+
+        <div class="overlay-title">
+
+            COSMO QUERY
+
+        </div>
+
+
+        <div id="overlayMessage">
+
+            INITIALIZING SENSOR LINK...
+
+        </div>
+
+
+        <div class="overlay-sub">
+
+            SATQUERY AI / MULTIMODAL ANALYSIS
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script type="module" src="js/upload-space.js"></script>
+
+<script src="js/upload.js"></script>
+
+
+</body>
+
+</html>
